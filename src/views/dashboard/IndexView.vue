@@ -18,7 +18,7 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-body">
-                            <router-view />
+                            <router-view :userData="user" />
                         </div>
                     </div>
                 </div>

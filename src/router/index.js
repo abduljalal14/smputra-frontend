@@ -14,11 +14,17 @@ const routes = [
     children : [
       { path: 'profile', 
         name: 'profile',
-        component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/ProfileView.vue') },
-        
+        component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/ProfileView.vue'),
+        props: { userData: 'user' } },
       { path: 'products', 
         name: 'products',
         component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/ProductList.vue') },
+      { path: 'add-product', 
+        name: 'add-product',
+        component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/CreateProduct.vue') },
+      { path: 'edit-product/:id', 
+        name: 'edit-product',
+        component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/EditProduct.vue') },
     ]
   },
   {

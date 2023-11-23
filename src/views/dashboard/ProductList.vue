@@ -1,6 +1,7 @@
 <template lang="">
    PRODUCT LIST
    <hr>
+   <router-link :to="{ name: 'add-product' }" class="btn btn-md btn-success rounded shadow border-0 mb-3">ADD NEW PRODUCT</router-link>
 <table class="table table-bordered">
                             <thead class="bg-dark text-white">
                                 <tr>
@@ -25,8 +26,8 @@
                                     <td>{{ product.name }}</td>
                                     <td>{{ product.price }}</td>
                                     <td class="text-center">
-                                        <!-- <router-link :to="{ name: 'products.edit', params:{id: product.id} }" class="btn btn-sm btn-primary rounded-sm shadow border-0 me-2">EDIT</router-link> -->
-                                        <button class="btn btn-sm btn-danger rounded-sm shadow border-0">DELETE</button>
+                                        <router-link :to="{ name: 'edit-product', params:{id: product.id} }" class="btn btn-sm btn-primary rounded-sm shadow border-0 me-2">EDIT</router-link>
+                                        <button  @click.prevent="deleteProduct(product.id)" class="btn btn-sm btn-danger rounded-sm shadow border-0">DELETE</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -65,6 +66,19 @@
         //call method "fetchDataproducts"
         fetchDataProducts();
     });
+
+      //method deletePost
+      const deleteProduct = async (id) => {
+
+        //delete post with API
+        await api.delete(`/api/products/${id}`)
+        .then(() => {
+
+            //call method "fetchDataPosts"
+            fetchDataProducts();
+        })
+
+};
 
 </script>
 

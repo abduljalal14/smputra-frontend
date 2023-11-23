@@ -6,7 +6,7 @@
         <div v-for="product in products" :key="product.id" class="col mb-5">
             <div class="card h-100">
                 <!-- Product image-->
-                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                <img class="card-img-top" v-bind:src="product.image" alt="..." />
                 <!-- Product details-->
                 <div class="card-body p-4">
                     <div class="text-center">
@@ -23,6 +23,24 @@
             </div>
         </div>
     </div>
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item" :class="{ 'disabled': currentPage === 1 }">
+            <a class="page-link" @click="fetchDataProducts(currentPage - 1)" :disabled="currentPage === 1" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" v-for="page in lastPage" :key="page" :class="{ 'active': currentPage === page }">
+            <a class="page-link" @click="fetchDataProducts(page)">{{ page }}</a>
+          </li>
+          <li class="page-item" :class="{ 'disabled': currentPage === lastPage }">
+            <a class="page-link" @click="fetchDataProducts(currentPage + 1)" :disabled="currentPage === lastPage" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
 </div>
 
         </section>
@@ -36,12 +54,26 @@ import api from '../api';
 //variable produk
 const products = ref([]);
 
+const currentPage = ref(1);
+const lastPage = ref(1);
+
 //method fetchDataproducts
-const fetchDataProducts = async () => {
-    await api.get('/api/products')
+// const fetchDataProducts = async () => {
+//     await api.get('/api/products')
+//     .then(response => {
+//         //set response data to state "products"
+//         products.value = response.data.data.data
+//     });
+// }
+
+// method fetchDataproducts
+const fetchDataProducts = async (page = 1) => {
+  await api.get('/api/products', { params: { page } })
     .then(response => {
-        //set response data to state "products"
-        products.value = response.data.data.data
+      // set response data to state "products"
+      products.value = response.data.data.data;
+      currentPage.value = response.data.data.current_page;
+      lastPage.value = response.data.data.last_page;
     });
 }
 
