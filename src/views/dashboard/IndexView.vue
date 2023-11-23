@@ -8,7 +8,8 @@
                             MAIN MENU
                             <hr>
                             <ul class="list-group">
-                                <router-link :to="{name: 'dashboard'}" class="list-group-item text-dark text-decoration-none">DASHBOARD</router-link>
+                                <router-link :to="{name: 'profile'}" class="list-group-item text-dark text-decoration-none">PROFILE</router-link>
+                                <router-link :to="{name: 'products'}" class="list-group-item text-dark text-decoration-none">PRODUCT LIST</router-link>
                                 <li @click="logout" class="list-group-item text-dark text-decoration-none" style="cursor:pointer">LOGOUT</li>
                             </ul>
                         </div>
@@ -17,9 +18,7 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-body">
-                            DASHBOARD
-                            <hr>
-                            Selamat Datang <strong>{{ user.name }}</strong>
+                            <router-view />
                         </div>
                     </div>
                 </div>
@@ -32,9 +31,9 @@
 
 import axios from 'axios'
 
+
 export default {
     name: 'DashboardView',
-
     data() {
         return {
             //state loggedIn with localStorage

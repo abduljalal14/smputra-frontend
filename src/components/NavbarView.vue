@@ -7,7 +7,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><router-link :to="{name: 'home'}" class="nav-link active">Home</router-link></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                        <li class="nav-item"><router-link :to="{name: 'about'}" class="nav-link">About</router-link></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Kategori</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -19,7 +19,7 @@
                         </li>
                     </ul>
                     <form class="d-flex">
-                        <button class="btn btn-outline-dark" type="submit">
+                        <button class="btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
                             <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
@@ -28,12 +28,22 @@
                 </div>
             </div>
         </nav>
+
+
+<div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" >
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Keranjang</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <p>Try scrolling the rest of the page to see this option in action.</p>
+  </div>
+</div>
+
 </template>
 <script>
 export default {
-    
+
 }
 </script>
-<style>
-    
-</style>
+<style></style>

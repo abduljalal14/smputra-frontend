@@ -10,7 +10,21 @@ const routes = [
   {
     path: '/dashboard',
     name: 'dashboard',
-    component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/IndexView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/IndexView.vue'),
+    children : [
+      { path: 'profile', 
+        name: 'profile',
+        component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/ProfileView.vue') },
+        
+      { path: 'products', 
+        name: 'products',
+        component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/ProductList.vue') },
+    ]
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: () => import(/* webpackChunkName: "about" */ '../views/about/IndexView.vue')
   },
   {
     path: '/login',
