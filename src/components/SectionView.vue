@@ -47,24 +47,21 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
+import { eventBus } from '../event-bus/index';
 
 //import api
 import api from '../api';
 
+eventBus.$on('selectedCategory', (data) => {
+  selectedCategory.value = data
+});
 //variable produk
 const products = ref([]);
-
+const selectedCategory = ref(null);
 const currentPage = ref(1);
 const lastPage = ref(1);
-
-//method fetchDataproducts
-// const fetchDataProducts = async () => {
-//     await api.get('/api/products')
-//     .then(response => {
-//         //set response data to state "products"
-//         products.value = response.data.data.data
-//     });
-// }
+const loading = ref(false);
+const error = ref(null);
 
 // method fetchDataproducts
 const fetchDataProducts = async (page = 1) => {
@@ -77,10 +74,26 @@ const fetchDataProducts = async (page = 1) => {
     });
 }
 
+const fetchData = async (page = 1) => {
+  loading.value = true;
+  try {
+    const params = { page, category_id: selectedCategory.value };
+    const response = await api.get('/api/products', { params });
+    products.value = response.data.data.data;
+    currentPage.value = response.data.data.current_page;
+    lastPage.value = response.data.data.last_page;
+    error.value = null;
+  } catch (err) {
+    error.value = 'Error fetching data.';
+  } finally {
+    loading.value = false;
+  }
+};
+
 //run hook "onMounted"
 onMounted(() => {
     //call method "fetchDataproducts"
-    fetchDataProducts();
+    fetchData();
 });
 </script>
 <style></style>

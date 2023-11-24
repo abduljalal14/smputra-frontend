@@ -13,8 +13,7 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="#!">All Products</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                                <li v-for="(category) in categories" :key="category.id" @click="selectCategory(category.id)"><a class="dropdown-item" href="#!">{{ category.name }}</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -41,9 +40,45 @@
 </div>
 
 </template>
-<script>
-export default {
+<script setup>
+import { ref, onMounted } from 'vue';
+import { eventBus } from '../event-bus/index';
 
-}
+
+
+// import API
+import api from '../api';
+
+eventBus.$emit('selectedCategory', selectedCategory);
+// variables
+const categories = ref([]);
+const loading = ref(false);
+const error = ref(null);
+const selectedCategory = ref();
+
+// method to fetch categories
+const fetchCategories = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get('/api/categories');
+    categories.value = response.data.data.data;
+    error.value = null;
+  } catch (err) {
+    error.value = 'Error fetching category data.';
+  } finally {
+    loading.value = false;
+  }
+};
+
+const selectCategory = (categoryId) => {
+    selectedCategory.value = categoryId;
+    console.log(selectedCategory)
+};
+
+// lifecycle hook
+onMounted(() => {
+  fetchCategories();
+});
 </script>
+
 <style></style>
