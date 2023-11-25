@@ -11,9 +11,9 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Kategori</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#!">All Products</a></li>
+                                <li><a class="dropdown-item" href="#!">All Menu</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li v-for="(category) in categories" :key="category.id" @click="selectCategory(category.id)"><a class="dropdown-item" href="#!">{{ category.name }}</a></li>
+                                <li v-for="(category) in categories" :key="category.id"><a class="dropdown-item" href="#!">{{ category.name }}</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -40,21 +40,21 @@
 </div>
 
 </template>
+<!-- ... -->
 <script setup>
 import { ref, onMounted } from 'vue';
-import { eventBus } from '../event-bus/index';
-
-
-
-// import API
 import api from '../api';
+import { useCategory } from "@/store/index";
 
-eventBus.$emit('selectedCategory', selectedCategory);
-// variables
+const categoryStore = useCategory();
 const categories = ref([]);
 const loading = ref(false);
 const error = ref(null);
-const selectedCategory = ref();
+
+const setCategories = (newCategories) => {
+  // Panggil action setCategories untuk memanggil mutation setCategories
+  categoryStore.setCategories(newCategories);
+};
 
 // method to fetch categories
 const fetchCategories = async () => {
@@ -63,6 +63,11 @@ const fetchCategories = async () => {
     const response = await api.get('/api/categories');
     categories.value = response.data.data.data;
     error.value = null;
+
+    console.log(categoryStore.categories);
+    // Pastikan pemanggilan setCategories benar
+    setCategories("Setelah Test");
+    console.log(categoryStore.categories);
   } catch (err) {
     error.value = 'Error fetching category data.';
   } finally {
@@ -70,15 +75,12 @@ const fetchCategories = async () => {
   }
 };
 
-const selectCategory = (categoryId) => {
-    selectedCategory.value = categoryId;
-    console.log(selectedCategory)
-};
-
 // lifecycle hook
 onMounted(() => {
   fetchCategories();
 });
 </script>
+<!-- ... -->
+
 
 <style></style>
