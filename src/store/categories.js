@@ -18,8 +18,8 @@ export const useCategory = defineStore({
         this.error = 'Error fetching category data.';
       }
     },
-    setSelectedCategory(categoryId){
-      this.selectedCategory = categoryId;
+    setSelectedCategory(category){
+      this.selectedCategory = category;
     },
   },
 });

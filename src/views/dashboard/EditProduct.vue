@@ -8,6 +8,11 @@
     //import api
     import api from "../../api";
 
+    import { useCategory } from '@/store/categories';
+
+
+    const categoryStore = useCategory();
+
     //init router
     const router = useRouter();
 
@@ -95,9 +100,8 @@
                             <div class="form-group mb-3">
                                 <label for="select-category">Select Category</label>
                                 <select v-model="category_id" class="form-control" id="select-category">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
+                                <option  v-for="category in categoryStore.categories" :key="category.id" :value="category.id">{{ category.name }}</option>
+
                                 </select>
                             </div>
                             <div class="mb-3">

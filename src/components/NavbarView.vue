@@ -13,7 +13,7 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li @click="categoryStore.selectedCategory=null"><a class="dropdown-item" href="#!">All Products</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li  v-for="(category) in categoryStore.categories" :key="category.id"><a class="dropdown-item" href="#!" @click="categoryStore.setSelectedCategory(category.id)">{{ category.name }}</a></li>
+                                <li  v-for="(category) in categoryStore.categories" :key="category.id"><a class="dropdown-item" href="#!" @click="categoryStore.setSelectedCategory(category)">{{ category.name }}</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -62,10 +62,6 @@ onMounted(() => {
 });
 
 watch(() => categoryStore.selectedCategory, () => {
-  console.log("category sekarang: "+categoryStore.selectedCategory)
-  search(); // Mencari produk setiap kali kategori berubah
-});
-watch(() => categoryStore.categories, () => {
   search(); // Mencari produk setiap kali kategori berubah
 });
 </script>

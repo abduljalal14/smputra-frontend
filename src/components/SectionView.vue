@@ -62,18 +62,16 @@ onMounted(() => {
   productStore.fetchDataProducts();
 });
 
+
+// Saat kategori dipilih, ambil nama kategorinya
 watch(() => categoryStore.selectedCategory, () => {
   selectedCategory.value = categoryStore.selectedCategory;
 
-  if (selectedCategory.value !== null && categoryStore.categories[selectedCategory.value-1]) {
-    categoryName.value = categoryStore.categories[selectedCategory.value-1]["name"];
-    console.log('Selected Name Category:', categoryStore.categories[selectedCategory.value-1]["name"]);
+  if (selectedCategory.value !== null) {
+    categoryName.value = categoryStore.selectedCategory.name;
   } else {
-    categoryName.value = null; // Atau set ke nilai default yang sesuai
+    selectedCategory.value = null; // kembalikan ke null 
   }
-
-  console.log('Selected Category:', categoryStore.selectedCategory);
-
 });
 
 
