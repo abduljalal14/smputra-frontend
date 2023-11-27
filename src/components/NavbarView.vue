@@ -11,12 +11,17 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Kategori</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#!">All Menu</a></li>
+                                <li @click="categoryStore.setSelectedCategory(null)"><a class="dropdown-item" href="#!">All Products</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li v-for="(category) in categories" :key="category.id"><a class="dropdown-item" href="#!">{{ category.name }}</a></li>
+                                <li  v-for="(category) in categoryStore.categories" :key="category.id"><a class="dropdown-item" href="#!" @click="categoryStore.setSelectedCategory(category.id)">{{ category.name }}</a></li>
                             </ul>
                         </li>
                     </ul>
+                  <div class="navbar-nav">
+                    <input v-model="productStore.query" placeholder="Cari produk" />
+                    <button @click="search">Cari</button>
+                  </div>
+                    
                     <form class="d-flex">
                         <button class="btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
                             <i class="bi-cart-fill me-1"></i>
@@ -27,7 +32,6 @@
                 </div>
             </div>
         </nav>
-
 
 <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" >
   <div class="offcanvas-header">
@@ -42,45 +46,26 @@
 </template>
 <!-- ... -->
 <script setup>
-import { ref, onMounted } from 'vue';
-import api from '../api';
-import { useCategory } from "@/store/index";
+import { onMounted, watch } from 'vue';
+import { useCategory } from "@/store/categories";
+import { useProducts } from "@/store/products";
+
+const productStore = useProducts();
 
 const categoryStore = useCategory();
-const categories = ref([]);
-const loading = ref(false);
-const error = ref(null);
+function search() {
+  productStore.fetchDataProducts(productStore.currentPage, productStore.query, categoryStore.selectedCategory);
+}
 
-const setCategories = (newCategories) => {
-  // Panggil action setCategories untuk memanggil mutation setCategories
-  categoryStore.setCategories(newCategories);
-};
-
-// method to fetch categories
-const fetchCategories = async () => {
-  loading.value = true;
-  try {
-    const response = await api.get('/api/categories');
-    categories.value = response.data.data.data;
-    error.value = null;
-
-    console.log(categoryStore.categories);
-    // Pastikan pemanggilan setCategories benar
-    setCategories("Setelah Test");
-    console.log(categoryStore.categories);
-  } catch (err) {
-    error.value = 'Error fetching category data.';
-  } finally {
-    loading.value = false;
-  }
-};
-
-// lifecycle hook
 onMounted(() => {
-  fetchCategories();
+  categoryStore.fetchDataCategory();
+});
+
+watch(() => categoryStore.selectedCategory, () => {
+  console.log('Selected Category:', categoryStore.selectedCategory);
+  search(); // Mencari produk setiap kali kategori berubah
 });
 </script>
-<!-- ... -->
 
 
 <style></style>
