@@ -4,7 +4,7 @@ import api from '../api';
 export const useCategory = defineStore({
   id: 'categories',
   state: () => ({ 
-    selectedCategory: 1,
+    selectedCategory: null,
     categories: [],
     error: null
   }),
