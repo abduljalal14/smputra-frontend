@@ -1,52 +1,18 @@
 <script setup>
-    //import ref
-    import { ref } from "vue";
-
-    //import api
-    import api from "../../api";
+    import { useProducts } from "@/store/products"
+    import { useCategory } from '@/store/categories';
     import { useRouter } from 'vue-router';
 
     //init router
     const router = useRouter();
 
-    //define state
-    const image = ref("");
-    const name = ref("");
-    const desc = ref("");
-    const price = ref("");
-    const category_id = ref("");
-
-    const errors = ref([]);
+    const categoryStore = useCategory();
+    const productStore = useProducts();
 
     //method for handle file changes
     const handleFileChange = (e) => {
         //assign file to state
-        image.value = e.target.files[0];
-    };
-
-    //method "storePost"
-    const storeProduct = async () => {
-
-        //init formData
-        let formData = new FormData();
-
-        //assign state value to formData
-        formData.append("image", image.value);
-        formData.append("name", name.value);
-        formData.append("desc", desc.value);
-        formData.append("price", price.value);
-        formData.append("category_id", category_id.value);
-
-        //store data with API
-        await api.post('/api/products', formData)
-        .then(() => {
-            //redirect
-            router.push({ path: "/dashboard/products" });
-        })
-        .catch((error) => {
-            //assign response error data to state "errors"
-            errors.value = error.response.data;
-        });
+        productStore.product.image = e.target.files[0];
     };
 </script>
 
@@ -56,41 +22,40 @@
             <div class="col-md-12">
                 <div class="card border-0 rounded shadow">
                     <div class="card-body">
-                        <form @submit.prevent="storeProduct()">
+                        <form @submit.prevent="productStore.storeProduct(router)">
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Image</label>
                                 <input type="file" class="form-control" @change="handleFileChange($event)">
-                                <div v-if="errors.image" class="alert alert-danger mt-2">
-                                    <span>{{ errors.image[0] }}</span>
+                                <div v-if="productStore.errors.image" class="alert alert-danger mt-2">
+                                    <span>{{ productStore.errors.image[0] }}</span>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Name</label>
-                                <input type="text" class="form-control" v-model="name" placeholder="name product">
-                                <div v-if="errors.name" class="alert alert-danger mt-2">
-                                    <span>{{ errors.name[0] }}</span>
+                                <input type="text" class="form-control" v-model="productStore.product.name" placeholder="name product">
+                                <div v-if="productStore.errors.name" class="alert alert-danger mt-2">
+                                    <span>{{ productStore.errors.name[0] }}</span>
                                 </div>
                             </div>
                             <div class="form-group mb-3">
                                 <label for="select-category">Select Category</label>
-                                <select v-model="category_id" class="form-control" id="select-category">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
+                                <select v-model="productStore.product.category_id" class="form-control" id="select-category">
+                                <option  v-for="category in categoryStore.categories" :key="category.id" :value="category.id">{{ category.name }}</option>
+
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Price</label>
-                                <input type="number" class="form-control" v-model="price" placeholder="price product">
-                                <div v-if="errors.price" class="alert alert-danger mt-2">
-                                    <span>{{ errors.price[0] }}</span>
+                                <input type="number" class="form-control" v-model="productStore.product.price" placeholder="price product">
+                                <div v-if="productStore.errors.price" class="alert alert-danger mt-2">
+                                    <span>{{ productStore.errors.price[0] }}</span>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Description</label>
-                                <textarea class="form-control" v-model="desc" rows="5" placeholder="desc product"></textarea>
-                                <div v-if="errors.desc" class="alert alert-danger mt-2">
-                                    <span>{{ errors.desc[0] }}</span>
+                                <textarea class="form-control" v-model="productStore.product.desc" rows="5" placeholder="desc product"></textarea>
+                                <div v-if="productStore.errors.desc" class="alert alert-danger mt-2">
+                                    <span>{{ productStore.perrors.desc[0] }}</span>
                                 </div>
                             </div>
 

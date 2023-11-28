@@ -1,79 +1,23 @@
 <script setup>
-    //import ref
-    import { ref, onMounted } from "vue";
-
-    //import router
+    import { useProducts } from "@/store/products"
+    import { onMounted } from "vue";
     import { useRouter, useRoute } from 'vue-router';
-
-    //import api
-    import api from "../../api";
-
     import { useCategory } from '@/store/categories';
 
-
-    const categoryStore = useCategory();
-
-    //init router
     const router = useRouter();
-
-    //init route
+    const productStore = useProducts();
+    const categoryStore = useCategory();
     const route = useRoute();
     const productId = route.params.id;
     
-    //define state
-    const image = ref("");
-    const name = ref("");
-    const desc = ref("");
-    const category_id = ref("");
-    const price = ref("");
-    const errors = ref([]);
-
-    //onMounted
     onMounted( async () => {
-
-        //fetch detail data post by ID
-        await api.get(`/api/products/${productId}`)
-        .then(response => {
-            
-            //set response data to state
-            name.value = response.data.data.name
-            desc.value = response.data.data.desc
-            category_id.value = response.data.data.category_id
-            price.value = response.data.data.price
-        });
+        productStore.fetchDataProduct(productId)
     })
 
-    //method for handle file changes
     const handleFileChange = (e) => {
-        //assign file to state
-        image.value = e.target.files[0];
+        productStore.product.image = e.target.files[0];
     };
 
-    //method "updateProduct"
-    const updateProduct = async () => {
-
-        //init formData
-        let formData = new FormData();
-
-        //assign state value to formData
-        formData.append("image", image.value);
-        formData.append("name", name.value);
-        formData.append("desc", desc.value);
-        formData.append("price", price.value);
-        formData.append("category_id", category_id.value);
-        formData.append("_method", "PATCH");
-
-        //store data with API
-        await api.post(`/api/products/${productId}`, formData)
-        .then(() => {
-            //redirect
-            router.push({ path: "/dashboard/products" });
-        })
-        .catch((error) => {
-            //assign response error data to state "errors"
-            errors.value = error.response.data;
-        });
-    };
 </script>
 
 <template>
@@ -82,40 +26,40 @@
             <div class="col-md-12">
                 <div class="card border-0 rounded shadow">
                     <div class="card-body">
-                        <form @submit.prevent="updateProduct()">
+                        <form @submit.prevent="productStore.updateProduct(productId, router)">
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Image</label>
                                 <input type="file" class="form-control" @change="handleFileChange($event)">
-                                <div v-if="errors.image" class="alert alert-danger mt-2">
-                                    <span>{{ errors.image[0] }}</span>
+                                <div v-if="productStore.errors.image" class="alert alert-danger mt-2">
+                                    <span>{{ productStore.errors.image[0] }}</span>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Product Name</label>
-                                <input type="text" class="form-control" v-model="name" placeholder="name Post">
-                                <div v-if="errors.name" class="alert alert-danger mt-2">
-                                    <span>{{ errors.name[0] }}</span>
+                                <input type="text" class="form-control" v-model="productStore.product.name" placeholder="name Post">
+                                <div v-if="productStore.errors.name" class="alert alert-danger mt-2">
+                                    <span>{{ productStore.errors.name[0] }}</span>
                                 </div>
                             </div>
                             <div class="form-group mb-3">
                                 <label for="select-category">Select Category</label>
-                                <select v-model="category_id" class="form-control" id="select-category">
+                                <select v-model="productStore.product.category_id" class="form-control" id="select-category">
                                 <option  v-for="category in categoryStore.categories" :key="category.id" :value="category.id">{{ category.name }}</option>
 
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Price</label>
-                                <input type="number" class="form-control" v-model="price" placeholder="price product">
-                                <div v-if="errors.price" class="alert alert-danger mt-2">
-                                    <span>{{ errors.price[0] }}</span>
+                                <input type="number" class="form-control" v-model="productStore.product.price" placeholder="price product">
+                                <div v-if="productStore.errors.price" class="alert alert-danger mt-2">
+                                    <span>{{ productStore.errors.price[0] }}</span>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">desc</label>
-                                <textarea class="form-control" v-model="desc" rows="5" placeholder="desc Post"></textarea>
-                                <div v-if="errors.desc" class="alert alert-danger mt-2">
-                                    <span>{{ errors.desc[0] }}</span>
+                                <textarea class="form-control" v-model="productStore.product.desc" rows="5" placeholder="desc Post"></textarea>
+                                <div v-if="productStore.errors.desc" class="alert alert-danger mt-2">
+                                    <span>{{ productStore.errors.desc[0] }}</span>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-md btn-primary rounded-sm shadow border-0">Update</button>

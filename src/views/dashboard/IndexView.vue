@@ -10,6 +10,7 @@
                 <ul class="list-group">
                   <router-link :to="{ name: 'profile' }" class="list-group-item text-dark text-decoration-none">PROFILE</router-link>
                   <router-link :to="{ name: 'products' }" class="list-group-item text-dark text-decoration-none">PRODUCT LIST</router-link>
+                  <router-link :to="{ name: 'categories' }" class="list-group-item text-dark text-decoration-none">CATEGORY LIST</router-link>
                   <li @click="logoutUser" class="list-group-item text-dark text-decoration-none" style="cursor: pointer">LOGOUT</li>
                 </ul>
               </div>
@@ -18,7 +19,7 @@
           <div class="col-md-8">
             <div class="card">
               <div class="card-body">
-                <router-view :userData="userStore.user" />
+                <router-view />
               </div>
             </div>
           </div>
@@ -49,13 +50,9 @@
   
   const logoutUser = async () => {
     try {
-      // Use router directly from the import
-      await userStore.logout();
-      // After successful logout, redirect to login page
-      router.push({ name: 'login' });
+      await userStore.logout(router);
     } catch (error) {
       console.error('Error during logout:', error);
-      // Handle error (optional)
     }
   };
   </script>

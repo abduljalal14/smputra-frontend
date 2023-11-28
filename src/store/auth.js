@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import api from '../api';
-import router from '@/router';
 
 export const useAuth = defineStore({
   id: 'auth',
@@ -77,12 +76,12 @@ export const useAuth = defineStore({
         }
 
     },
-    logout() {
+    logout(router) {
         api.get('/api/logout')
           .then(() => {
             localStorage.removeItem('loggedIn');
             // Redirect using the provided router instance
-            return router.push({ name: 'login' })
+            router.push({ path: "/login" });
           })
           .catch((error) => {
             console.error('Error during logout:', error);

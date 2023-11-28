@@ -53,7 +53,6 @@
   
   // Handle the login action
 const loginUser = async () => {
-  console.log('Before pushing to dashboard:', router);
   await userStore.login(router);
 };
   
