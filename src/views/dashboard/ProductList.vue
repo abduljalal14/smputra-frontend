@@ -33,6 +33,25 @@
                             </tbody>
                         </table>
 
+                        <!-- Pagination -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item" :class="{ 'disabled': productStore.currentPage === 1 }">
+            <a class="page-link" @click="productStore.fetchDataProducts(productStore.currentPage - 1)" :disabled="productStore.currentPage === 1" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" v-for="page in productStore.lastPage" :key="page" :class="{ 'active': productStore.currentPage === page }">
+            <a class="page-link" @click="productStore.fetchDataProducts(page)">{{ page }}</a>
+          </li>
+          <li class="page-item" :class="{ 'disabled': productStore.currentPage === productStore.lastPage }">
+            <a class="page-link" @click="productStore.fetchDataProducts(productStore.currentPage + 1)" :disabled="productStore.currentPage === productStore.lastPage" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
 </template>
 
 <script setup>
@@ -46,6 +65,8 @@
     });
 </script>
 
-<style lang="">
-    
+<style>
+  .page-link:hover {
+    cursor: pointer;
+  }
 </style>
