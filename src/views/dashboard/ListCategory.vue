@@ -22,7 +22,7 @@
                                      <td>{{ category.id }}</td>
                                      <td>{{ category.name }}</td>
                                      <td class="text-center">
-                                         <button data-bs-toggle="modal" data-bs-target="#editCategoryModal" class="btn btn-sm btn-primary rounded-sm shadow border-0 me-2">EDIT</button>
+                                         <button @click="editCategory(category)" data-bs-toggle="modal" data-bs-target="#editCategoryModal" class="btn btn-sm btn-primary rounded-sm shadow border-0 me-2">EDIT</button>
                                          <button @click="confirmDelete(category.id)" class="btn btn-sm btn-danger rounded-sm shadow border-0 me-2">DELETE</button>
                                      </td>
                                  </tr>
@@ -56,7 +56,7 @@
 <!-- Modal Update -->
 <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form @submit.prevent="categoryStore.updateCategory(categoryId, router)">
+    <form @submit.prevent="categoryStore.updateCategory(router)">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
@@ -65,7 +65,7 @@
       <div class="modal-body">
           <div class="mb-3">
             <label for="name" class="form-label">Category Name</label>
-            <input v-model="categoryStore.category.name" type="text" class="form-control" id="name"/>
+            <input v-model="categoryStore.category.name" type="text" class="form-control" id="name" />
           </div>
       </div>
       <div class="modal-footer">
@@ -84,14 +84,18 @@
 <script setup>
 import { useCategory } from "@/store/categories"
 import { onMounted, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 //init router
-const route = useRoute();
 const router = useRouter();
-const categoryId = route.params.id;
 const categoryStore = useCategory()
 
-// Fungsi untuk menyimpan dan mengarahkan ke daftar kategori
+
+const editCategory = (category) => {
+    categoryStore.category = category
+    console.log("Isi categoryEdit: ",categoryStore.category )
+    console.log("Isi CategoryName: ",categoryStore.category.name)
+    console.log("Isi CategoryId: ", categoryStore.category.id)
+};
 
 
 const confirmDelete = (categoryId) => {

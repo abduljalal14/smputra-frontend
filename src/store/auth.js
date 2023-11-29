@@ -16,7 +16,6 @@ export const useAuth = defineStore({
       try {
         const response = await api.get('/api/user', {headers: {'Authorization': 'Bearer '+this.token}})
         this.user = response.data
-        console.log(response)
       } catch (err) {
         this.error = 'Error fetching user data.';
       }
@@ -80,7 +79,7 @@ export const useAuth = defineStore({
         api.get('/api/logout')
           .then(() => {
             localStorage.removeItem('loggedIn');
-            // Redirect using the provided router instance
+            this.loggedIn = false
             router.push({ path: "/login" });
           })
           .catch((error) => {

@@ -36,14 +36,14 @@ export const useCategory = defineStore({
           this.errors = response.data;
       }
     },
-    async updateCategory(categoryId, router) {
+    async updateCategory(router) {
       let formData = new FormData();
       formData.append("name", this.category.name);
       formData.append("_method", "PATCH");
       //store data with API
-      const response = await api.post(`/api/categories/${categoryId}`, formData)
+      const response = await api.post(`/api/categories/${this.category.id}`, formData)
       try{
-          this.product = []
+          this.category = []
           router.push({ path: "/dashboard/categories" });
       }
       catch(err){

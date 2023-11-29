@@ -11,7 +11,7 @@
                   <router-link :to="{ name: 'profile' }" class="list-group-item text-dark text-decoration-none">PROFILE</router-link>
                   <router-link :to="{ name: 'products' }" class="list-group-item text-dark text-decoration-none">PRODUCT LIST</router-link>
                   <router-link :to="{ name: 'categories' }" class="list-group-item text-dark text-decoration-none">CATEGORY LIST</router-link>
-                  <li @click="logoutUser" class="list-group-item text-dark text-decoration-none" style="cursor: pointer">LOGOUT</li>
+                  <li @click="userStore.logout(router)" class="list-group-item text-dark text-decoration-none" style="cursor: pointer">LOGOUT</li>
                 </ul>
               </div>
             </div>
@@ -29,7 +29,7 @@
   </template>
   
   <script setup>
-  import { onMounted } from 'vue';
+  import { onMounted, watch } from 'vue';
   import { useAuth } from "@/store/auth";
   import { useRouter } from "vue-router";
   
@@ -38,21 +38,16 @@
   
   // Fetch user data when the component is mounted
   onMounted(async () => {
-    try {
-        if (!userStore.loggedIn) {
-        router.push({ name: 'login' });
+      if (!userStore.loggedIn) {
+      router.push({ name: 'login' });
       }
       await userStore.fetchDataUser();
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
   });
-  
-  const logoutUser = async () => {
-    try {
-      await userStore.logout(router);
-    } catch (error) {
-      console.error('Error during logout:', error);
-    }
-  };
+
+  watch(() => userStore.loggedIn, () => {
+    if (!userStore.loggedIn) {
+        router.push({ name: 'login' });
+  }});
+
+
   </script>
