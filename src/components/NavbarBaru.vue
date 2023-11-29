@@ -1,110 +1,66 @@
 <template>
-<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" aria-label="Main navigation">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Offcanvas navbar</a>
-      <button class="navbar-toggler p-0 border-0" type="button" @click="toggleOffcanvas" aria-label="Toggle navigation">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-custom fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="https://santrikoding.com">
+        <img id="logo" src="https://santrikoding.com/images/logo-black.webp" style="max-height: 45px" alt="logo">
+      </a>
+      <ul class="navbar-nav ml-auto">
+        <li class="d-block d-md-none d-lg-none text-right">
+          <a data-bs-toggle="modal" data-bs-target="#search" title="search" class="nav-link mt-1" style="cursor: pointer">
+            <i class="bi bi-search"></i>
+          </a>
+        </li>
+      </ul>
+      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="navbar-collapse offcanvas-collapse" :class="{ open: isOffcanvasOpen }">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <!-- Your navigation items go here -->
+      <div id="navbarContent" class="navbar-collapse collapse">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item megamenu">
+            <a href="#" class="nav-link font-weight-bold text-uppercase">DEVELOPER</a>
+          </li>
         </ul>
       </div>
-
-      <form class="d-flex search-form">
+      <div id="navbarContent" class="navbar-collapse collapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="d-none d-md-block d-lg-block">
+            <span data-bs-toggle="modal" data-bs-target="#search" class="nav-link" style="cursor: pointer">
+              <i class="bi bi-search"></i>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <form id="navbarContent"  class="d-flex navbar-collapse collapse" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
     </div>
   </nav>
-  </template>
+
+  <div class="modal modal-search fade" id="search" aria-modal="true" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content border-0 rounded shadow-custom">
+        <div class="modal-header">
+          <div class="modal-title h6" id="example-modal-sizes-title-lg">
+            <i class="bi bi-search"></i>
+            SEARCH
+          </div>
+          <button type="button" class="close text-dark" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <input type="text" id="search-ajax" class="form-control form-control-lg"
+            placeholder="Apa yang ingin Anda beli?" autofocus="">
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
   
-  <script setup>
-  import { ref } from 'vue'
-  const isOffcanvasOpen = ref(false);
-  
-  const toggleOffcanvas = () => {
-    isOffcanvasOpen.value = !isOffcanvasOpen.value;
-  };
-  </script>
-<style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-      @media (max-width: 991.98px) {
-  .offcanvas-collapse {
-    z-index: 999;
-    position: fixed;
-    top: 56px; /* Height of navbar */
-    bottom: 0;
-    left: 100%;
-    width: 100%;
-    padding-right: 1rem;
-    padding-left: 1rem;
-    overflow-y: auto;
-    visibility: hidden;
-    background-color: #343a40;
-    transition: transform .3s ease-in-out, visibility .3s ease-in-out;
-  }
-  .offcanvas-collapse.open {
-    visibility: visible;
-    transform: translateX(-100%);
-  }
-  .search-form {
-    position: absolute;
-    right: 0;
-    margin-right: 15px; /* Adjust as needed */
-  }
-}
-
-.nav-scroller {
-  position: relative;
-  z-index: 2;
-  height: 2.75rem;
-  overflow-y: hidden;
-}
-
-.nav-scroller .nav {
-  display: flex;
-  flex-wrap: nowrap;
-  padding-bottom: 1rem;
-  margin-top: -1px;
-  overflow-x: auto;
-  color: rgba(255, 255, 255, .75);
-  text-align: center;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-}
-
-.nav-underline .nav-link {
-  padding-top: .75rem;
-  padding-bottom: .75rem;
-  font-size: .875rem;
-  color: #6c757d;
-}
-
-.nav-underline .nav-link:hover {
-  color: #007bff;
-}
-
-.nav-underline .active {
-  font-weight: 500;
-  color: #343a40;
-}
-
-.bg-purple {
-  background-color: #6f42c1;
-}
-
-</style>
+<script setup>
+</script>
+<style></style>
