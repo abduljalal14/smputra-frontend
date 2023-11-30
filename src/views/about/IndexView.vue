@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="container">
+    <div class="container mt-5">
         <div class="mt-4 p-5 bg-primary text-white rounded">
   <h1>Tentang Sarimulya Putra</h1>
   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam inventore, suscipit dolore necessitatibus, eos, a mollitia neque saepe consectetur pariatur voluptate nulla aspernatur deleniti maxime ipsa magnam numquam error modi?</p>

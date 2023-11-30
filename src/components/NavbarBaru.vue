@@ -4,13 +4,24 @@
       <a class="navbar-brand" href="https://santrikoding.com">
         <img id="logo" src="https://santrikoding.com/images/logo-black.webp" style="max-height: 45px" alt="logo">
       </a>
-      <ul class="navbar-nav ml-auto">
+
+      <!-- layar kecil tidak collapse, di layar besar display:none -->
+      <ul class="navbar-nav me-auto">
         <li class="d-block d-md-none d-lg-none text-right">
           <a data-bs-toggle="modal" data-bs-target="#search" title="search" class="nav-link mt-1" style="cursor: pointer">
             <i class="bi bi-search"></i>
           </a>
         </li>
       </ul>
+      <div class="navbar-nav ml-auto">
+          <button class="d-block d-md-none d-lg-none btn btn-outline-dark" type="button" data-bs-toggle="modal" data-bs-target="#search" title="search"
+            style="cursor: pointer">
+            <i class="bi-cart-fill me-1"></i>
+            Cart
+            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+          </button>
+      </div>
+    
       <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarContent"
         aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -19,23 +30,46 @@
       <div id="navbarContent" class="navbar-collapse collapse">
         <ul class="navbar-nav me-auto">
           <li class="nav-item megamenu">
-            <a href="#" class="nav-link font-weight-bold text-uppercase">DEVELOPER</a>
+            <router-link :to="{name: 'home'}" class="nav-link font-weight-bold text-uppercase">HOME</router-link>
+          </li>
+          <li class="nav-item megamenu dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            PRODUK
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">SEMUA PRODUK</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">FASHION</a></li>
+            <li><a class="dropdown-item" href="#">FOOD</a></li>
+            <li><a class="dropdown-item" href="#">ELEKTRONIK</a></li>
+          </ul>
+          </li>
+          <li class="nav-item megamenu">
+            <a href="#" class="nav-link font-weight-bold text-uppercase">KONTAK</a>
+          </li>
+          <li class="nav-item megamenu">
+            <router-link :to="{name: 'about'}" class="nav-link font-weight-bold text-uppercase">About</router-link>
+          </li>
+          <li class="nav-item megamenu">
+            <router-link :to="{name: 'blog'}" class="nav-link font-weight-bold text-uppercase">BLOG</router-link>
           </li>
         </ul>
+          <ul class="navbar-nav ml-auto">
+            <li class="d-none d-md-block">
+              <a data-bs-toggle="modal" data-bs-target="#search" title="search" class="nav-link mt-1" style="cursor: pointer">
+            <i class="bi bi-search"></i>
+          </a>
+            </li>
+          </ul>
+        <div class="navbar-nav ml-auto">
+          <button class="d-none d-md-block btn btn-outline-dark" type="button" data-bs-toggle="modal" data-bs-target="#search" title="search"
+            style="cursor: pointer">
+            <i class="bi-cart-fill me-1"></i>
+            Cart
+            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+          </button>
+        </div>
       </div>
-      <div id="navbarContent" class="navbar-collapse collapse">
-        <ul class="navbar-nav ml-auto">
-          <li class="d-none d-md-block d-lg-block">
-            <span data-bs-toggle="modal" data-bs-target="#search" class="nav-link" style="cursor: pointer">
-              <i class="bi bi-search"></i>
-            </span>
-          </li>
-        </ul>
-      </div>
-      <form id="navbarContent"  class="d-flex navbar-collapse collapse" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
     </div>
   </nav>
 

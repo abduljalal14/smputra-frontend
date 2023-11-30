@@ -1,12 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/home/IndexView.vue'
-
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
-  },
+    name: 'front',
+    component: () => import(/* webpackChunkName: "about" */ '../views/IndexView.vue'),
+    children : [
+      { path: '/', 
+        name: 'home',
+        component: () => import(/* webpackChunkName: "about" */ '../views/home/HomeView.vue') },
+      { path: 'about', 
+        name: 'about',
+        component: () => import(/* webpackChunkName: "about" */ '../views/about/IndexView.vue') },
+      { path: 'blog', 
+        name: 'blog',
+        component: () => import(/* webpackChunkName: "about" */ '../views/blog/BlogView.vue') },
+    ]
+  }, 
   {
     path: '/dashboard',
     name: 'dashboard',
@@ -29,11 +38,6 @@ const routes = [
         name: 'edit-product',
         component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/EditProduct.vue') },
     ]
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: () => import(/* webpackChunkName: "about" */ '../views/about/IndexView.vue')
   },
   {
     path: '/login',
