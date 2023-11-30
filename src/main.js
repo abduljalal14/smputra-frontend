@@ -14,6 +14,7 @@ import 'bootstrap/dist/js/bootstrap.min'
 import Navbar from "./components/NavbarBaru.vue";
 import Footer from "./components/FooterView.vue";
 import Carousel from "./components/CarouselView.vue";
+import Slick from "./components/CarouselSlick.vue";
 import Section from "./components/SectionView.vue";
 import Frontend from "./views/IndexView.vue";
 
@@ -27,6 +28,7 @@ const app = createApp(App);
 app.component("nav-bar", Navbar);
 app.component("footer-component", Footer);
 app.component("carousel-component", Carousel);
+app.component("slick-component", Slick);
 app.component("section-component", Section);
 app.component("front-component", Frontend);
 

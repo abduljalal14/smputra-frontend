@@ -1,12 +1,12 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-custom fixed-top">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-custom fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="https://santrikoding.com">
-        <img id="logo" src="https://santrikoding.com/images/logo-black.webp" style="max-height: 45px" alt="logo">
-      </a>
-
+        <router-link :to="{name: 'home'}" class="navbar-brand">
+          <img id="logo" src="../assets/smputra-logo.png" style="max-height: 45px" alt="logo">
+        </router-link>
       <!-- layar kecil tidak collapse, di layar besar display:none -->
-      <ul class="navbar-nav me-auto">
+      <ul class="navbar-nav ml-auto">
         <li class="d-block d-md-none d-lg-none text-right">
           <a data-bs-toggle="modal" data-bs-target="#search" title="search" class="nav-link mt-1" style="cursor: pointer">
             <i class="bi bi-search"></i>
@@ -73,6 +73,8 @@
     </div>
   </nav>
 
+  </div>
+  
   <div class="modal modal-search fade" id="search" aria-modal="true" role="dialog" style="display: none;">
     <div class="modal-dialog modal-lg">
       <div class="modal-content border-0 rounded shadow-custom">
