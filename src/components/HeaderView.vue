@@ -1,6 +1,6 @@
 <template lang="">
     <!-- Header-->
-    <header class="py-5 mt-5">
+    <header class="p-4 mt-5">
         <slick-component></slick-component>
     </header>
 </template>

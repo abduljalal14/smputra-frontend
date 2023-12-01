@@ -1,14 +1,18 @@
 <template>
+  <div class="mt-3">
     <swiper
       :slidesPerView="1"
       :spaceBetween="30"
       :loop="true"
+      :autoplay="{
+      delay: 2500,
+      disableOnInteraction: false,
+    }"
       :pagination="{
         clickable: true,
       }"
-      :navigation="true"
       :modules="modules"
-      class="mySwiper"
+      class="banner"
     >
     <swiper-slide
       ><img
@@ -23,6 +27,8 @@
       ><img src="https://www.yogyagroup.com/storage/banner/5fbf1fe697265_1606361062.jpg"
     /></swiper-slide>
     </swiper>
+  </div>
+    
   </template>
   <script>
     // Import Swiper Vue.js components
@@ -35,7 +41,7 @@
     import 'swiper/css/navigation';
   
     // import required modules
-    import { Pagination, Navigation } from 'swiper/modules';
+    import {  Autoplay, Pagination, Navigation } from 'swiper/modules';
   
     export default {
       components: {
@@ -44,13 +50,13 @@
       },
       setup() {
         return {
-          modules: [Pagination, Navigation],
+          modules: [Autoplay, Pagination, Navigation],
         };
       },
     };
   </script>
   <style>
-.swiper {
+.banner {
   width: 85%;
   height: auto;
 }
@@ -67,14 +73,14 @@
 }
 
 .swiper-slide img {
-    border-radius: 20px;
+  border-radius: 15px;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.swiper {
+.banner {
   margin-left: auto;
   margin-right: auto;
 }

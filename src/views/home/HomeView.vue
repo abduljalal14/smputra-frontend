@@ -1,8 +1,7 @@
 <template>
         <div class="home">
                 <carousel-component></carousel-component>
-                <section-component></section-component>
-
+                <category-component></category-component>
         </div>
 </template>
 
@@ -17,6 +16,6 @@
 background-size: 100% auto; /* Lebar 100%, tinggi otomatis */
   background-position: top center; /* Posisi di tengah atas */
   background-repeat: no-repeat; /* Tidak mengulang gambar */
-        color: beige;
+        color: rgb(56, 7, 7);
 }
 </style>
