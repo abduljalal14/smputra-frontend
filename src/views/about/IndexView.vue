@@ -1,55 +1,71 @@
 <template lang="">
-    <div class="container mt-5">
-        <div class="mt-4 p-5 bg-primary text-white rounded">
-  <h1>Tentang Sarimulya Putra</h1>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam inventore, suscipit dolore necessitatibus, eos, a mollitia neque saepe consectetur pariatur voluptate nulla aspernatur deleniti maxime ipsa magnam numquam error modi?</p>
-</div>
+   <section id="about">
+        <header class="masthead" style="background-image: url(https://www.yogyagroup.com/storage/article/653f648478983_1698653316.jpg); background-size: cover;">
+            <div class="container h-100">
+                <div class="row h-100 align-items-center">
+                    <div class="col-12 text-center text-white">
+                        <h1 class="font-weight-bold font-montserrat">YOGYA Group</h1>
+                        <p class="font-montserrat">PT. Akur Pratama</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </section>
 
-<div class="accordion" id="accordionExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-        Accordion Item #1
-      </button>
-    </h2>
-    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-      </div>
-    </div>
-  </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-        Accordion Item #2
-      </button>
-    </h2>
-    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-      </div>
-    </div>
-  </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-        Accordion Item #3
-      </button>
-    </h2>
-    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-      </div>
-    </div>
-  </div>
-</div>
-    </div>
+    <section id="about-text" class="p-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 pt-4 pb-4">
+                    <h3 class="text-center font-montserrat">Tentang Kami</h3>
+                    <p class="text-center m-0">PT. Akur Pratama (Yogya Group) adalah perusahaan ritel modern asli Indonesia dengan format Supermarket dan Department Store. Berdasarkan misi: setia memenuhi kebutuhan masyarakat, kami selalu berusaha menyajikan produk-produk yang berkualitas, unggul layanan, akrab bersahabat serta suasana belanja yang menyenangkan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="visi-misi" class="p-4">
+        <div class="container">
+            <div class="row">
+                                <div class="col-12 col-md-6">
+                                            <a href="https://www.google.com/search?q=yogya+sunda+heritage&amp;oq=YOGYA+SUNDA+HER&amp;gs_lcrp=EgZjaHJvbWUqCAgBEAAYFhgeMgYIABBFGDkyCAgBEAAYFhgeMgYIAhBFGEDSAQg4NzEwajBqN6gCALACAA&amp;sourceid=chrome&amp;ie=UTF-8#ip=1">
+                            <img src="https://www.yogyagroup.com/storage/banner/653f5a219ba14_1698650657.jpg" class="img-fluid mb-3 mb-md-0 w-100" alt="brand_kami.png">
+                        </a>
+                                    </div>
+                                <div class="col-12 col-md-6 align-self-lg-center">
+                    <div>
+                        <div class="mb-5">
+                            <h4 class="font-weight-bold font-montserrat">VISI</h4>
+                            <p>Tetap menjadi pilihan utama</p>
+                        </div>
+                        <div>
+                            <h4 class="font-weight-bold font-montserrat">MISI</h4>
+                            <p>Setia memenuhi kebutuhan masyarakat, selalu berusaha menyajikan produk berkualitas, unggul layanan, akrab bersahabat serta suasana belanja yang menyenangkan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </template>
 <script>
 export default {
 
 }
 </script>
-<style lang="">
-    
+<style lang="css">
+#about .masthead {
+    height: 100vh;
+    min-height: 500px;
+    background-size: cover;
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+
+
+#about #about-text {
+    background-color: #F8F8F7;
+}
 </style>

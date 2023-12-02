@@ -62,7 +62,7 @@
   height: auto;
 }
 
-.swiper-slide {
+.banner .swiper-slide {
   text-align: center;
   /* Center slide text vertically */
   display: flex;
@@ -70,7 +70,7 @@
   align-items: center;
 }
 
-.swiper-slide img {
+.banner .swiper-slide img {
   border-radius: 15px;
   display: block;
   width: 100%;

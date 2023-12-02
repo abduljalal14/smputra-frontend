@@ -9,8 +9,7 @@
       :slidesPerView="SlidesView"
       :loop="true"
       :navigation="true"
-      :spaceBetween="30"
-      :centeredSlides="true"
+      :spaceBetween="10"
       :autoplay="{
       delay: 3000,
       disableOnInteraction: false,
@@ -19,12 +18,17 @@
       class="categorySwiper"
     >
     <swiper-slide v-for="(n, index) in 10" :key="index">
-        <div class="card card-product" style="width: 15rem;">
-        <img class="card-img-top" src="../assets/images/category/category-tea-coffee-drinks.jpg" alt="Card image cap">
-        <div class="card-body">
-            <p class="card-text">Kategori {{ n }}</p>
-        </div>
-        </div>
+      <a href="#"
+          class="text-decoration-none text-inherit">
+          <div class="card card-product" style="max-width: 390px;">
+            <div class="card-body text-center py-8">
+              <img src="../assets/images/category/category-tea-coffee-drinks.jpg"
+                alt="Grocery Ecommerce Template" class="mb-3" />
+              <div class="text-truncate">Snack & Munchies
+              </div>
+            </div>
+          </div>
+          </a>
     </swiper-slide>
     </swiper>
             </div>
@@ -38,15 +42,15 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
 const modules = [Autoplay, Pagination, Navigation];
 
-const SlidesView = ref(5);
+const SlidesView = ref(4);
 
 const updateSlidesView = () => {
   if (window.innerWidth < 768) {
-    SlidesView.value = 3;
+    SlidesView.value = 2;
   } else if (window.innerWidth < 992) {
-    SlidesView.value = 4;
+    SlidesView.value = 3;
   } else {
-    SlidesView.value = 5;
+    SlidesView.value = 4;
   }
 };
 
@@ -62,21 +66,6 @@ onBeforeUnmount(() => {
 <style>
 .categorySwiper {
     width: 100%;
-}
-.swiper-slide {
-    text-align: center;
-    /* Center slide text vertically */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.swiper-slide img {
-    padding: 5px;
-    display: block;
-    width: 100%;
-    height: auto;
-    object-fit: cover;
 }
 </style>
   

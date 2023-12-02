@@ -20,7 +20,7 @@ background-size: 100% auto; /* Lebar 100%, tinggi otomatis */
   background-position-y: -80px;
   background-repeat: no-repeat; /* Tidak mengulang gambar */
 
-  position: fixed; /* atau position: absolute; sesuai kebutuhan */
+  position: absolute; /* atau position: absolute; sesuai kebutuhan */
   top: 0;
   left: 0;
   width: 100%;

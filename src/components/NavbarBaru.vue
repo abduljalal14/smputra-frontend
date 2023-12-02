@@ -40,22 +40,11 @@
             <li class="nav-item megamenu">
               <router-link :to="{ name: 'home' }" class="nav-link nav-link-custom text-uppercase" :class="{ 'active': route.name === 'home' }">Home</router-link>
             </li>
-            <li class="nav-item megamenu dropdown">
-              <a class="nav-link nav-link-custom dropdown-toggle text-uppercase" :class="{ 'active': route.name === 'produk' }" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Produk
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Semua Produk</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="#">Fashion</a></li>
-                <li><a class="dropdown-item" href="#">Food</a></li>
-                <li><a class="dropdown-item" href="#">Elektronik</a></li>
-              </ul>
+            <li class="nav-item megamenu">
+              <router-link :to="{ name: 'shop' }" class="nav-link nav-link-custom text-uppercase" :class="{ 'active': route.name === 'shop' }">Belanja</router-link>
             </li>
             <li class="nav-item megamenu">
-              <a href="#" class="nav-link nav-link-custom text-uppercase" :class="{ 'active': route.name === 'kontak' }">Kontak</a>
+              <router-link :to="{ name: 'membership' }" class="nav-link nav-link-custom text-uppercase" :class="{ 'active': route.name === 'membership' }">Membership</router-link>
             </li>
             <li class="nav-item megamenu">
               <router-link :to="{ name: 'about' }" class="nav-link nav-link-custom text-uppercase" :class="{ 'active': route.name === 'about' }">About</router-link>
