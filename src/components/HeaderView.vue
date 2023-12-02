@@ -1,7 +1,9 @@
 <template lang="">
     <!-- Header-->
-    <header class="p-4 mt-5">
-        <slick-component></slick-component>
+    <header class=" carousel-section">
+        <div class="container-fluid">
+            <slick-component></slick-component>
+        </div>
     </header>
 </template>
 <script>
@@ -9,6 +11,15 @@ export default {
     
 }
 </script>
-<style lang="">
-    
+<style lang="css">
+.carousel-section {
+    margin-top: 6rem;
+}
+
+@media (max-width: 992px) {
+    .carousel-section {
+        margin-top: 4rem;
+
+    }
+}
 </style>

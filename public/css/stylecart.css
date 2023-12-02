@@ -127,7 +127,7 @@ div.zoom img {
     --fc-gray-700: #3d4f58;
     --fc-gray-800: #21313c;
     --fc-gray-900: #001e2b;
-    --fc-primary: #0aad0a;
+    --fc-primary: #ad0a92;
     --fc-secondary: #889397;
     --fc-success: #198754;
     --fc-info: #016bf8;
@@ -328,18 +328,7 @@ div.zoom img {
     }
 }
 
-body {
-    -webkit-text-size-adjust: 100%;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    background-color: var(--fc-body-bg);
-    color: var(--fc-body-color);
-    font-family: var(--fc-body-font-family);
-    font-size: var(--fc-body-font-size);
-    font-weight: var(--fc-body-font-weight);
-    line-height: var(--fc-body-line-height);
-    margin: 0;
-    text-align: var(--fc-body-text-align)
-}
+
 
 hr {
     border: 0;

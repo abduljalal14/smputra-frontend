@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-custom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
       <div class="container">
         <router-link :to="{ name: 'home' }" class="navbar-brand">
           <img id="logo" src="../assets/smputra-logo.png" style="max-height: 45px" alt="logo">
@@ -38,30 +38,30 @@
         <div id="navbarContent" class="navbar-collapse collapse">
           <ul class="navbar-nav me-auto">
             <li class="nav-item megamenu">
-              <router-link :to="{ name: 'home' }" class="nav-link font-weight-bold text-uppercase">HOME</router-link>
+              <router-link :to="{ name: 'home' }" class="nav-link nav-link-custom text-uppercase" :class="{ 'active': route.name === 'home' }">Home</router-link>
             </li>
             <li class="nav-item megamenu dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                PRODUK
+              <a class="nav-link nav-link-custom dropdown-toggle text-uppercase" :class="{ 'active': route.name === 'produk' }" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Produk
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">SEMUA PRODUK</a></li>
+                <li><a class="dropdown-item" href="#">Semua Produk</a></li>
                 <li>
                   <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="#">FASHION</a></li>
-                <li><a class="dropdown-item" href="#">FOOD</a></li>
-                <li><a class="dropdown-item" href="#">ELEKTRONIK</a></li>
+                <li><a class="dropdown-item" href="#">Fashion</a></li>
+                <li><a class="dropdown-item" href="#">Food</a></li>
+                <li><a class="dropdown-item" href="#">Elektronik</a></li>
               </ul>
             </li>
             <li class="nav-item megamenu">
-              <a href="#" class="nav-link font-weight-bold text-uppercase">KONTAK</a>
+              <a href="#" class="nav-link nav-link-custom text-uppercase" :class="{ 'active': route.name === 'kontak' }">Kontak</a>
             </li>
             <li class="nav-item megamenu">
-              <router-link :to="{ name: 'about' }" class="nav-link font-weight-bold text-uppercase">About</router-link>
+              <router-link :to="{ name: 'about' }" class="nav-link nav-link-custom text-uppercase" :class="{ 'active': route.name === 'about' }">About</router-link>
             </li>
             <li class="nav-item megamenu">
-              <router-link :to="{ name: 'blog' }" class="nav-link font-weight-bold text-uppercase">BLOG</router-link>
+              <router-link :to="{ name: 'blog' }" class="nav-link nav-link-custom text-uppercase" :class="{ 'active': route.name === 'blog' }">Blog</router-link>
             </li>
           </ul>
           <ul class="navbar-nav ml-auto m-2">
@@ -123,6 +123,42 @@
 </template>
   
 <script setup>
+import { useRoute } from 'vue-router'
+
+
+const route = useRoute()
 </script>
 <style>
+ #offcanvasRight {
+    width: 500px;
+  }
+
+
+.navbar-custom {
+    background-color: #fff;
+    -webkit-box-shadow: 0px 2px 3px -3px rgba(0,0,0,0.75);
+    box-shadow: 0px 2px 3px -3px rgba(0,0,0,0.75);
+}
+
+.navbar-custom-toggler {
+    border: none;
+    padding: 0;
+}
+
+
+.nav-link-custom {
+    font-weight: 700;
+    font-size: .9rem;
+    color: #000 !important;
+    border-bottom: 4px solid transparent;
+}
+.nav-link-custom:hover, .nav-link-custom.active {
+    /* border-bottom: 4px solid #00A759; */
+    border-bottom: 4px solid #3f002f;
+    -webkit-transition: border-bottom .3s ease;
+    -o-transition: border-bottom .3s ease;
+    transition: border-bottom .3s ease;
+}
+
+
 </style>

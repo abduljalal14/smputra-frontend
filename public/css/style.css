@@ -92,6 +92,8 @@
 }
 
 body {
+  overflow: hidden;
+  overflow-y: scroll; /* Aktifkan bilah scroll pada elemen ini */
   margin: 0;
   font-family: var(--bs-body-font-family);
   font-size: var(--bs-body-font-size);

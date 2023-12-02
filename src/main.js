@@ -19,6 +19,7 @@ import Section from "./components/SectionView.vue";
 import Frontend from "./views/IndexView.vue";
 import Cart from "./components/CartView.vue";
 import Category from "./components/CategorySection.vue";
+import Shoping from "./components/ShopingView.vue";
 
 
 
@@ -35,6 +36,7 @@ app.component("section-component", Section);
 app.component("front-component", Frontend);
 app.component("cart-component", Cart);
 app.component("category-component", Category);
+app.component("shoping-component", Shoping);
 
 app.use(createPinia())
 app.use(router)

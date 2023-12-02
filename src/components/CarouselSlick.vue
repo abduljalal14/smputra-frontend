@@ -1,15 +1,16 @@
 <template>
-  <div class="mt-3">
+  <div class="container">
     <swiper
       :slidesPerView="1"
       :spaceBetween="30"
       :loop="true"
       :autoplay="{
-      delay: 2500,
+      delay: 3000,
       disableOnInteraction: false,
     }"
       :pagination="{
         clickable: true,
+        dynamicBullets: true,
       }"
       :modules="modules"
       class="banner"
@@ -57,15 +58,12 @@
   </script>
   <style>
 .banner {
-  width: 85%;
+  width: 90%;
   height: auto;
 }
 
 .swiper-slide {
-   
   text-align: center;
-  font-size: 18px;
-
   /* Center slide text vertically */
   display: flex;
   justify-content: center;
@@ -84,5 +82,9 @@
   margin-left: auto;
   margin-right: auto;
 }
-
+@media (max-width: 992px) {
+    .banner {
+      width: 98%;
+    }
+}
 </style>
