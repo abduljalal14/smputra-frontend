@@ -2,8 +2,10 @@
         <div class="home">
                 <div class="background"></div>
                 <carousel-component></carousel-component>
-                <shoping-component></shoping-component>
+                <welcome-component></welcome-component>
                 <category-component></category-component>
+                <new-product></new-product>
+                <features-component></features-component>
         </div>
 </template>
 

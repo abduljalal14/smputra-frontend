@@ -6,7 +6,7 @@ import router from './router/index'
 // import axios
 import axios from 'axios'
 //import bootstrap css & js
-import 'bootstrap/dist/css/bootstrap.css'
+//import 'bootstrap/dist/css/bootstrap.css'
 import 'jquery/dist/jquery.min'
 import 'popper.js/dist/popper.min'
 import 'bootstrap/dist/js/bootstrap.min'
@@ -19,8 +19,13 @@ import Section from "./components/SectionView.vue";
 import Frontend from "./views/IndexView.vue";
 import Cart from "./components/CartView.vue";
 import Category from "./components/CategorySection.vue";
-import Shoping from "./components/ShopingView.vue";
-
+import HeroSlider from "./components/HeroSlider.vue";
+import Features from "./components/FeatureView.vue";
+import Welcome from "./components/WelcomeView.vue";
+import NewProduct from "./components/NewProduct.vue";
+import ProductCard from "./components/ProductCard.vue";
+import ProductDetails from "./components/ProductDetail.vue";
+import ProducPlacholder from "./components/ProductPlaceholder.vue";
 
 
 axios.defaults.withCredentials = true
@@ -36,7 +41,14 @@ app.component("section-component", Section);
 app.component("front-component", Frontend);
 app.component("cart-component", Cart);
 app.component("category-component", Category);
-app.component("shoping-component", Shoping);
+app.component("hero-slider", HeroSlider);
+app.component("features-component", Features);
+app.component("welcome-component", Welcome);
+app.component("new-product", NewProduct);
+app.component("product-card", ProductCard);
+app.component("product-placeholder", ProducPlacholder);
+app.component("product-detail", ProductDetails);
+
 
 app.use(createPinia())
 app.use(router)

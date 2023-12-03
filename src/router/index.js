@@ -20,6 +20,9 @@ const routes = [
       { path: 'shop', 
         name: 'shop',
         component: () => import(/* webpackChunkName: "about" */ '../views/shop/ShopView.vue') },
+      { path: 'checkout', 
+        name: 'checkout',
+        component: () => import(/* webpackChunkName: "about" */ '../views/checkout/IndexView.vue') },
     ]
   }, 
   {

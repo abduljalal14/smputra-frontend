@@ -18,7 +18,7 @@ export default {
 
 @media (max-width: 992px) {
     .carousel-section {
-        margin-top: 4rem;
+        margin-top: 5rem;
 
     }
 }
