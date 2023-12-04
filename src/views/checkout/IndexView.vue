@@ -21,14 +21,14 @@
                   <div class="row">
                      <div class="col-lg-6 col-md-12">
                            <div class="px-6 py-4 card shadow-sm">
-                              <h5 class=" bg-transparent mb-2">Data Diri dan Metode</h5>
+                              <h5 class=" bg-transparent mb-2">Isi Form Pemesan</h5>
                         <!-- Nama -->
                         <div class="mb-3">
                         <label class="form-label" for="textInput">Nama</label>
                         <input v-model="orderStore.customerName" type="text" id="name-input" class="form-control" placeholder="Nama">
                         </div>
-                        <!-- Phone Input -->
-                        <div class="mb-3">
+                        <!-- Phone Input --> 
+                        <div class="mb-3"> 
                         <label for="telinput" class="form-label">No. Handphone</label>
                         <input v-model="orderStore.customerPhone" class="form-control" type="tel" id="telinput">
                         </div>
@@ -91,32 +91,31 @@
            <div class="me-auto">
               <div>Item Subtotal</div>
            </div>
-           <span>Rp {{ cartStore.subtotal }}</span>
+           <span>Rp {{ orderStore.subtotal }}</span>
         </li>
         <!-- list group item -->
    <li v-if="orderStore.orderMethod == 'COD'" class="list-group-item d-flex justify-content-between align-items-start">
       <div class="me-auto">
          <div>Biaya Ongkir</div>
       </div>
-      <span>Rp. 3.000</span>
+      <span>Rp. {{ orderStore.ongkir }}</span>
    </li>
    <!-- list group item -->
    <li class="list-group-item d-flex justify-content-between align-items-start">
       <div class="me-auto">
          <div class="fw-bold">Total</div>
       </div>
-      <span v-if="orderStore.orderMethod != 'COD'" class="fw-bold">Rp. {{ cartStore.subtotal }}</span>
-      <span v-else class="fw-bold">Rp. {{ cartStore.subtotal+3000 }}</span>
+      <span v-if="orderStore.orderMethod != 'COD'" class="fw-bold">Rp. {{ orderStore.subtotal }}</span>
+      <span v-else class="fw-bold">Rp. {{ orderStore.getTotal }}</span>
    </li>
     </ul>
  </div>
  <div class="d-grid mb-1 mt-4">
     <!-- btn -->
-    
-   <div v-if="orderStore.customerName == '' && orderStore.customerAddres == '' && orderStore.customerPhone == ''" class="alert alert-danger" role="alert">Lengkapi Data untuk melakukan Checkout</div>
+<div v-if="orderStore.invalid || cartStore.cartItems.length === 0" class="alert alert-danger" role="alert">Lengkapi Data untuk melakukan Checkout</div>
    <button v-else class="btn btn-primary btn-lg d-flex justify-content-between align-items-center" type="submit" data-bs-toggle="modal" data-bs-target="#detailOrderModal">
     Go to Checkout 
-    <span class="fw-bold">Rp. {{ cartStore.subtotal }}</span>
+    <span class="fw-bold">Rp. {{ orderStore.getTotal }}</span>
    </button>
  </div>
                               
@@ -130,7 +129,7 @@
 
 <!-- detail accept order  -->
 <div class="modal fade" id="detailOrderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
+  <div class="modal-dialog modal-sm modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Data Pemesan</h5>
@@ -140,19 +139,29 @@
         <pre>
             <h3 class="text-center">INVOICE</h3>
             <ul class="list-group">
+            <li class="list-group-item active">Detail Customer</li>
             <li class="list-group-item">Nama    : {{ orderStore.customerName }}</li>
             <li class="list-group-item">No. HP  : {{ orderStore.customerPhone }}</li>
             <li class="list-group-item">Alamat  : {{ orderStore.customerAddres }}</li>
+            <li class="list-group-item active">Toko & Metode</li>
             <li class="list-group-item">Toko    : {{ orderStore.storeLocation }}</li>
             <li class="list-group-item">Metode  : {{ orderStore.orderMethod }}</li>
-            </ul>
+            <li class="list-group-item active">Daftar Belanjaan</li>
+            <li v-for="(cartItem, index) in cartStore.cartItems" :key="index" class="list-group-item">{{ cartItem.product.name }} {{ cartItem.qty }}x@{{ cartItem.product.price }} : {{ cartItem.total }}</li>
+            <li v-if="orderStore.orderMethod == 'COD'" class="list-group-item">Ongkos Kirim  : {{ orderStore.ongkir }}</li>
+            <li class="list-group-item active"><h4 class="ml-auto">Total  : Rp {{ orderStore.total }}</h4></li>
+         </ul> 
         </pre>
+      </div>
+      <div class="modal-footer">
+        <button @click="openWhatsApp" type="button" class="btn btn-success btn-lg d-flex justify-content-between align-items-center">Buat Pesanan</button>
       </div>
     </div>
   </div>
 </div>
 </template>
 <script setup>
+import { ref } from 'vue'
 import { useCart } from '@/store/cart'
 import { useOrder } from '@/store/order'
 import { watchEffect } from 'vue';
@@ -160,15 +169,61 @@ import { watchEffect } from 'vue';
 const cartStore = useCart()
 const orderStore = useOrder()
 
+const phoneNumber = ref('6282325339189'); // Ganti nomor telepon dengan nomor yang sesuai
+const messageText = ref('Halo, apa kabar?'); // Ganti teks pesan yang sesuai
+
+const openWhatsApp = () => {
+  const whatsappLink = `https://wa.me/${phoneNumber.value}?text=${encodeURIComponent(messageText.value)}`;
+  window.open(whatsappLink, '_blank');
+};
+
+
+
 watchEffect(() => {
   // Hitung subtotal setiap kali cartItems berubah
-  cartStore.subtotal = cartStore.cartItems.reduce((total, item) => {
+  orderStore.subtotal = cartStore.cartItems.reduce((total, item) => {
     return total + Math.floor(item.total);
   }, 0);
 });
 
+// import { defineStore } from 'pinia';
+
+// export const contactStore = defineStore({
+//   id: 'contact',
+//   state: () => ({ 
+//     whatsapp: '082325339189',
+//     instagram: 'smputra.id',
+//     facebook: 'Sari Mulya Putra',
+//   }),
+//   getters: {
+// //     getWA(store) {
+// //       if (store = 'Sari Mulya Pasarbatang') {
+// //         this.whatsapp = '082325339189'
+// //       } else {
+// //         this.whatsapp = '089525333009'
+// //       } 
+// //   },
+//   }
+// });
 
 </script>
-<style lang="">
-    
+<style lang="css">
+.whatsapp-ico{
+    fill: white;
+    width: 50px;
+    height: 50px;
+    padding: 3px;
+    background-color: #4dc247;
+    border-radius: 50%;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+    /* box-shadow: 2px 2px 11px rgba(0,0,0,0.7); */
+    position: fixed;
+    bottom: 20px;
+    right : 20px;
+    z-index: 10;
+}
+
+.whatsapp-ico:hover{
+    box-shadow: 2px 2px 11px rgba(0,0,0,0.7);
+}
 </style>

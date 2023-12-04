@@ -19,8 +19,8 @@
           <div class="d-block d-md-none d-lg-none">
             <a class="text-muted  position-relative" role="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
               <i class="h3 bi bi-handbag"></i>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                1
+              <span v-if="cartStore.cartItems.length > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                {{ cartStore.cartItems.length }}
               </span>
             </a>
           </div>
@@ -87,7 +87,7 @@
             SEARCH
           </div>
           <button type="button" class="close text-dark" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
+            <span aria-hidden="true">×</span>  
           </button>
         </div>
 

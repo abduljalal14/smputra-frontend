@@ -3,19 +3,29 @@ import { defineStore } from 'pinia';
 export const useOrder = defineStore({
   id: 'order',
   state: () => ({ 
-    customerName: "",
-    customerAddres: "",
-    customerPhone: "",
+    customer:[],
+    customerName: '',
+    customerAddres: '',
+    customerPhone: '',
     storeLocation: "Sari Mulya Pasarbatang",
+    ongkir: 3000,
     orderMethod: 'COD',
+    subtotal: 0,
+    total: 0
   }),
   actions: {
-    valid() {
-        if (this.customerName == "" && this.customerAddres == "" && this.customerPhone == "") {
-            return true
-        } else {
-            return false
-        }
-    }
   },
+  getters: {
+    invalid() {
+      return this.customerName === '' || this.customerAddres === '' || this.customerPhone === '';
+  },
+  getTotal(){
+    if (this.orderMethod == 'COD') {
+      this.total = this.subtotal+this.ongkir
+    } else {
+      this.total = this.subtotal
+    }
+    return this.total
+  }
+  }
 });

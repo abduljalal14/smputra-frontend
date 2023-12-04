@@ -4,7 +4,6 @@ export const useCart = defineStore({
   id: 'cart',
   state: () => ({ 
     cartItems: [], // Menambahkan total sebagai kunci ketiga
-    subtotal: 0,
   }),
   actions: {
     addToCart(product) {
