@@ -148,42 +148,53 @@
             <li class="list-group-item">Metode  : {{ orderStore.orderMethod }}</li>
             <li class="list-group-item active">Daftar Belanjaan</li>
             <li v-for="(cartItem, index) in cartStore.cartItems" :key="index" class="list-group-item">{{ productStore.products[cartItem.product_id].name }} {{ cartItem.qty }}x@{{ productStore.products[cartItem.product_id].price }} : {{ productStore.products[cartItem.product_id].price* cartItem.qty }}</li>
+            
             <li v-if="orderStore.orderMethod == 'COD'" class="list-group-item">Ongkos Kirim  : {{ orderStore.ongkir }}</li>
-            <li class="list-group-item active"><h4 class="ml-auto">Total  : Rp {{ orderStore.total }}</h4></li>
+            <li class="list-group-item active"><h4 class="ml-auto" >Total  : Rp {{ orderStore.total }}</h4></li>
          </ul> 
         </pre>
       </div>
       <div class="modal-footer">
-        <button @click="makeOrder()" type="submit" class="btn btn-success btn-lg d-flex justify-content-between align-items-center">Buat Pesanan</button>
+         <div data-bs-dismiss="modal" >
+            <button @click="makeOrder()" type="submit" class="btn btn-success btn-lg d-flex justify-content-between align-items-center">Buat Pesanan</button>
+         </div>
       </div>
     </div>
   </div>
 </div>
 </template>
 <script setup>
-// import { ref } from 'vue'
 import { useCart } from '@/store/cart'
 import { useOrder } from '@/store/order'
 import { useProducts } from '@/store/products';
-import { watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
+import { watchEffect, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const route = useRoute()
+const router = useRouter()
 const cartStore = useCart()
 const orderStore = useOrder()
 const productStore = useProducts()
+const name = ref(orderStore.customerName)
 
 const makeOrder = () => {
-  orderStore.storeOrder(route, cartStore.cartItems)
+  orderStore.storeOrder(router, cartStore.cartItems)
+  openWhatsApp()
 };
 
-// const phoneNumber = ref('6282325339189'); // Ganti nomor telepon dengan nomor yang sesuai
-// const messageText = ref('Halo, apa kabar?'); // Ganti teks pesan yang sesuai
+const phoneNumber = ref('6282325339189'); // Ganti nomor telepon dengan nomor yang sesuai
+const messageText = ref(`*Detail Invoice*
 
-// const openWhatsApp = () => {
-//   const whatsappLink = `https://wa.me/${phoneNumber.value}?text=${encodeURIComponent(messageText.value)}`;
-//   window.open(whatsappLink, '_blank');
-// };
+Nama   : ${(name.value)}
+
+Detail Item:
+Produk ID : ${String(cartStore.cartItems[0].product_id)}
+Produk ID : ${String(cartStore.cartItems[1].product_id)}`
+); 
+
+const openWhatsApp = () => {
+  const whatsappLink = `https://wa.me/${phoneNumber.value}?text=${encodeURIComponent(messageText.value)}`;
+  window.open(whatsappLink, '_blank');
+};
 
 
 

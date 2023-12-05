@@ -12,7 +12,8 @@ export const useOrder = defineStore({
     ongkir: 3000,
     orderMethod: 'COD',
     subtotal: 0,
-    total: 0
+    total: 0,
+    formData: new FormData()
   }),
   actions: {
     async fetchDataOrders() {
@@ -25,18 +26,17 @@ export const useOrder = defineStore({
       }
     },
     async storeOrder (router, orderItem){
-      let formData = new FormData();
-      formData.append("customer_name", this.customerName);
-      formData.append("customer_phone", this.customerPhone);
-      formData.append("customer_address", this.customerAddres);
-      formData.append("store_location", this.storeLocation);
-      formData.append("shipping_method", this.orderMethod);
-      formData.append("details", orderItem);
-      console.log('Isi dari orderItem: ', orderItem)
-      console.log('Isi dari formData: ', formData)
-      const response = await api.post('/api/orders', formData)
+      this.formData = {
+        "customer_name": this.customerName,
+        "customer_phone": this.customerPhone,
+        "customer_address": this.customerAddres,
+        "store_location": this.storeLocation,
+        "shipping_method": this.orderMethod,
+        "details": orderItem
+      }
+      const response = await api.post('/api/orders', this.formData)
       try{
-          this.orders = []
+          this.formData = new FormData()
           //redirect
           router.push({ path: "/" });
       }

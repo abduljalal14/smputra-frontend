@@ -10,7 +10,7 @@
 				class="mb-3 img-fluid" />
 	</div>
 	<div class="mb-1">
-        <small class="text-decoration-none text-muted">Nama Kategori</small>
+        <small class="text-decoration-none text-muted">{{ props.product.category.name }}</small>
 	</div>
 	<h2 class="fs-5">
         <a href="#"

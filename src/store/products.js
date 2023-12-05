@@ -21,6 +21,8 @@ export const useProducts = defineStore({
         this.products = response.data.data.data;
         this.currentPage = response.data.data.current_page;
         this.lastPage = response.data.data.last_page;
+        console.log('Tipe Data Products:', typeof this.products);
+        console.log('Isi Data Products:', this.products);
         this.error = null;
       } catch (err) {
         this.error = 'Error fetching category data.';

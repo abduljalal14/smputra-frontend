@@ -8,7 +8,6 @@ export const useCart = defineStore({
   actions: {
     addToCart(product_id) {
       const existingItem = this.cartItems.find(item => item.product_id === product_id);
-
       if (existingItem) {
         existingItem.qty++;
         if (existingItem.qty === 0) {
