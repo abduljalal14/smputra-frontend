@@ -13,16 +13,16 @@
                      <div class="row align-items-center">
                         <div class="col-5 col-md-5 col-lg-6">
                            <div class="d-flex">
-                              <img v-bind:src="cartItem.product.image" alt="Ecommerce" class="icon-shape icon-xxl">
+                              <img v-bind:src="productStore.products[cartItem.product_id].image" alt="Ecommerce" class="icon-shape icon-xxl">
                               <div class="ms-3">
                                  <!-- title -->
                                  <a href="./pages/shop-single.html" class="text-inherit">
-                                    <h6 class="mb-0">{{ cartItem.product.name }}</h6>
+                                    <h6 class="mb-0">{{ productStore.products[cartItem.product_id].name }}</h6>
                                  </a>
-                                 <span><small class="text-muted">Rp {{ cartItem.product.price }}</small></span>
+                                 <span><small class="text-muted">Rp {{ productStore.products[cartItem.product_id].price }}</small></span>
                                  <!-- text -->
                                  <div class="mt-2 small lh-1">
-                                    <a href="#!" class="text-decoration-none text-inherit text-danger"  @click="cartStore.deleteCartItem(cartItem.product)">
+                                    <a href="#!" class="text-decoration-none text-inherit text-danger"  @click="cartStore.deleteCartItem(cartItem.product_id)">
                                        <span class="me-1 align-text-bottom">
                                           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 text-success">
                                              <polyline points="3 6 5 6 21 6"></polyline>
@@ -43,13 +43,13 @@
                            <!-- input -->
                            <div class="input-group input-spinner">
                               <input type="button" value="-" class="button-minus btn btn-sm" data-field="quantity" @click="cartStore.decreaseQty(cartItem)">
-                              <input type="number" step="1" max="10" v-model="cartItem.qty" name="quantity" class="quantity-field form-control-sm form-input" @input="cartStore.updateQty(cartItem)">
+                              <input type="number" step="1" max="10" v-model="cartItem.qty" name="quantity" class="quantity-field form-control-sm form-input">
                               <input type="button" value="+" class="button-plus btn btn-sm" data-field="quantity" @click="cartStore.increaseQty(cartItem)">
                            </div>
                         </div>
                         <!-- price -->
                         <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                           <span class="fw-bold">Rp {{ cartItem.total }}</span>
+                           <span class="fw-bold">Rp {{ productStore.products[cartItem.product_id].price * cartItem.qty }}</span>
                         </div>
                      </div>
                   </li>
@@ -64,8 +64,9 @@
 </template>
 <script setup>
 import { useCart } from '@/store/cart'
+import { useProducts } from '@/store/products'
 
-
+const productStore = useProducts()
 const cartStore = useCart()
 
 </script>

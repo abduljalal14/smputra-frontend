@@ -23,7 +23,7 @@
 			<span class="text-dark">Rp {{ props.product.price }}</span>
 		</div>
 		<div>
-			<a href="#!" class="btn btn-primary btn-product btn-sm" @click="cartStore.addToCart(props.product)">
+			<a href="#!" class="btn btn-primary btn-product btn-sm" @click="cartStore.addToCart(props.product.id)">
 				<svg xmlns="http://www.w3.org/2000/svg"
 					width="16" height="16" viewBox="0 0 24 24"
 					fill="none" stroke="currentColor"

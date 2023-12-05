@@ -66,17 +66,17 @@
                                  <li v-for="(cartItem, index) in cartStore.cartItems" :key="index" class="list-group-item px-4 py-3">
                                     <div class="row align-items-center">
                                        <div class="col-2 col-md-2">
-                                          <img v-bind:src="cartItem.product.image" alt="Ecommerce" class="img-fluid">
+                                          <img v-bind:src="productStore.products[cartItem.product_id].image" alt="Ecommerce" class="img-fluid">
                                        </div>
                                        <div class="col-5 col-md-5">
-                                          <h6 class="mb-0">{{ cartItem.product.name }}</h6>
-                                          <span><small class="text-muted">{{ cartItem.product.category.name }}</small></span>
+                                          <h6 class="mb-0">{{ productStore.products[cartItem.product_id].name }}</h6>
+                                          <span><small class="text-muted">{{ productStore.products[cartItem.product_id].category.name }}</small></span>
                                        </div>
                                        <div class="col-2 col-md-2 text-center text-muted">
                                           <span>{{  cartItem.qty }}</span>
                                        </div>
                                        <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                          <span class="fw-bold">Rp {{ cartItem.total }}</span>
+                                          <span class="fw-bold">Rp {{ productStore.products[cartItem.product_id].price * cartItem.qty }}</span>
                                        </div>
                                     </div>
                                  </li>
@@ -147,64 +147,64 @@
             <li class="list-group-item">Toko    : {{ orderStore.storeLocation }}</li>
             <li class="list-group-item">Metode  : {{ orderStore.orderMethod }}</li>
             <li class="list-group-item active">Daftar Belanjaan</li>
-            <li v-for="(cartItem, index) in cartStore.cartItems" :key="index" class="list-group-item">{{ cartItem.product.name }} {{ cartItem.qty }}x@{{ cartItem.product.price }} : {{ cartItem.total }}</li>
+            <li v-for="(cartItem, index) in cartStore.cartItems" :key="index" class="list-group-item">{{ productStore.products[cartItem.product_id].name }} {{ cartItem.qty }}x@{{ productStore.products[cartItem.product_id].price }} : {{ productStore.products[cartItem.product_id].price* cartItem.qty }}</li>
             <li v-if="orderStore.orderMethod == 'COD'" class="list-group-item">Ongkos Kirim  : {{ orderStore.ongkir }}</li>
             <li class="list-group-item active"><h4 class="ml-auto">Total  : Rp {{ orderStore.total }}</h4></li>
          </ul> 
         </pre>
       </div>
       <div class="modal-footer">
-        <button @click="openWhatsApp" type="button" class="btn btn-success btn-lg d-flex justify-content-between align-items-center">Buat Pesanan</button>
+        <button @click="makeOrder()" type="submit" class="btn btn-success btn-lg d-flex justify-content-between align-items-center">Buat Pesanan</button>
       </div>
     </div>
   </div>
 </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+// import { ref } from 'vue'
 import { useCart } from '@/store/cart'
 import { useOrder } from '@/store/order'
+import { useProducts } from '@/store/products';
 import { watchEffect } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute()
 const cartStore = useCart()
 const orderStore = useOrder()
+const productStore = useProducts()
 
-const phoneNumber = ref('6282325339189'); // Ganti nomor telepon dengan nomor yang sesuai
-const messageText = ref('Halo, apa kabar?'); // Ganti teks pesan yang sesuai
-
-const openWhatsApp = () => {
-  const whatsappLink = `https://wa.me/${phoneNumber.value}?text=${encodeURIComponent(messageText.value)}`;
-  window.open(whatsappLink, '_blank');
+const makeOrder = () => {
+  orderStore.storeOrder(route, cartStore.cartItems)
 };
+
+// const phoneNumber = ref('6282325339189'); // Ganti nomor telepon dengan nomor yang sesuai
+// const messageText = ref('Halo, apa kabar?'); // Ganti teks pesan yang sesuai
+
+// const openWhatsApp = () => {
+//   const whatsappLink = `https://wa.me/${phoneNumber.value}?text=${encodeURIComponent(messageText.value)}`;
+//   window.open(whatsappLink, '_blank');
+// };
 
 
 
 watchEffect(() => {
   // Hitung subtotal setiap kali cartItems berubah
-  orderStore.subtotal = cartStore.cartItems.reduce((total, item) => {
-    return total + Math.floor(item.total);
-  }, 0);
+  orderStore.subtotal = Object.values(cartStore.cartItems).reduce((total, cartItem) => {
+    // Cari produk yang sesuai berdasarkan product_id
+    const product = productStore.products.find(product => product.id === cartItem.product_id);
+
+    // Jika produk ditemukan, tambahkan ke total
+    if (product) {
+        // Hitung subtotal untuk satu item dalam keranjang belanja
+        const itemTotal = product.price * cartItem.qty;
+
+        // Tambahkan ke total keseluruhan
+        total += itemTotal;
+    }
+
+    return total;
+}, 0);
 });
-
-// import { defineStore } from 'pinia';
-
-// export const contactStore = defineStore({
-//   id: 'contact',
-//   state: () => ({ 
-//     whatsapp: '082325339189',
-//     instagram: 'smputra.id',
-//     facebook: 'Sari Mulya Putra',
-//   }),
-//   getters: {
-// //     getWA(store) {
-// //       if (store = 'Sari Mulya Pasarbatang') {
-// //         this.whatsapp = '082325339189'
-// //       } else {
-// //         this.whatsapp = '089525333009'
-// //       } 
-// //   },
-//   }
-// });
 
 </script>
 <style lang="css">
