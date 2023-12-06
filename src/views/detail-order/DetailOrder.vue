@@ -25,15 +25,15 @@
                            <div class="px-6 py-4 card shadow-sm">
                               <h5 class=" bg-transparent mb-2">Data Pemesan</h5>
                                 <ul>
-                                    <li>Nama : {{ orderStore.product.name }}</li>
-                                    <li>No. HP : {{ orderStore.product.phone }}</li>
-                                    <li>Alamat : {{ orderStore.product.address }}</li>
-                                    <li>Toko : {{ orderStore.product.store }}</li>
-                                    <li>Metode : {{ orderStore.product.method }}</li>
-                                    <li>Tanggal : {{ orderStore.product.created_at }}</li>
+                                    <li>Nama : {{ orderStore.order.name }}</li>
+                                    <li>No. HP : {{ orderStore.order.phone }}</li>
+                                    <li>Alamat : {{ orderStore.order.address }}</li>
+                                    <li>Toko : {{ orderStore.order.store }}</li>
+                                    <li>Metode : {{ orderStore.order.method }}</li>
+                                    <li>Tanggal : {{ orderStore.order.date }}</li>
                                 </ul>
                                 <ul>
-                                    <li v-for="(item, index) in orderStore.product.items" :key="index">{{ productStore.products[item.product_id].name }} x {{ item.qty }}</li>
+                                    <li v-for="(item, index) in orderStore.order.items" :key="index">{{ productStore.products[item.product_id].name }} x {{ item.qty }}</li>
                                 </ul>
                               <h5 class=" bg-transparent mb-2">Toko & Metode</h5>
                                 <ul>
@@ -68,11 +68,11 @@ import { onMounted } from 'vue'
 const orderStore = useOrder()
 const productStore = useProducts()
 
-
 onMounted(() => {
     productStore.fetchDataProducts();
     orderStore.fetchDataOrder(1);
 });
+
 </script>
 
 

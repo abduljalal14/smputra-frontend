@@ -5,7 +5,7 @@ export const useOrder = defineStore({
   id: 'order',
   state: () => ({ 
     orders:null,
-    order:null,
+    order:{},
     customerName: '',
     customerAddres: '',
     customerPhone: '',
@@ -35,6 +35,7 @@ export const useOrder = defineStore({
       this.order.method = response.data.data.shipping_method
       this.order.date = response.data.data.created_at
       this.order.items = response.data.data.order_details
+      console.log('isi dari order name: ', this.order.name)
     },
     async storeOrder (router, orderItem){
       this.formData = {
