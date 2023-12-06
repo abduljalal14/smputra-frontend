@@ -66,17 +66,17 @@
                                  <li v-for="(cartItem, index) in cartStore.cartItems" :key="index" class="list-group-item px-4 py-3">
                                     <div class="row align-items-center">
                                        <div class="col-2 col-md-2">
-                                          <img v-bind:src="productStore.products[cartItem.product_id].image" alt="Ecommerce" class="img-fluid">
+                                          <img v-bind:src="productStore.products.find(product => product.id === cartItem.product_id).image" alt="Ecommerce" class="img-fluid">
                                        </div>
                                        <div class="col-5 col-md-5">
-                                          <h6 class="mb-0">{{ productStore.products[cartItem.product_id].name }}</h6>
-                                          <span><small class="text-muted">{{ productStore.products[cartItem.product_id].category.name }}</small></span>
+                                          <h6 class="mb-0">{{ productStore.products.find(product => product.id === cartItem.product_id).name }}</h6>
+                                          <span><small class="text-muted">{{ productStore.products.find(product => product.id === cartItem.product_id).category.name }}</small></span>
                                        </div>
                                        <div class="col-2 col-md-2 text-center text-muted">
                                           <span>{{  cartItem.qty }}</span>
                                        </div>
                                        <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                          <span class="fw-bold">Rp {{ productStore.products[cartItem.product_id].price * cartItem.qty }}</span>
+                                          <span class="fw-bold">Rp {{ productStore.products.find(product => product.id === cartItem.product_id).price * cartItem.qty }}</span>
                                        </div>
                                     </div>
                                  </li>
@@ -147,7 +147,7 @@
             <li class="list-group-item">Toko    : {{ orderStore.storeLocation }}</li>
             <li class="list-group-item">Metode  : {{ orderStore.orderMethod }}</li>
             <li class="list-group-item active">Daftar Belanjaan</li>
-            <li v-for="(cartItem, index) in cartStore.cartItems" :key="index" class="list-group-item">{{ productStore.products[cartItem.product_id].name }} {{ cartItem.qty }}x@{{ productStore.products[cartItem.product_id].price }} : {{ productStore.products[cartItem.product_id].price* cartItem.qty }}</li>
+            <li v-for="(cartItem, index) in cartStore.cartItems" :key="index" class="list-group-item">{{ productStore.products.find(product => product.id === cartItem.product_id).name }} {{ cartItem.qty }}x@{{ productStore.products.find(product => product.id === cartItem.product_id).price }} : {{ productStore.products.find(product => product.id === cartItem.product_id).price* cartItem.qty }}</li>
             
             <li v-if="orderStore.orderMethod == 'COD'" class="list-group-item">Ongkos Kirim  : {{ orderStore.ongkir }}</li>
             <li class="list-group-item active"><h4 class="ml-auto" >Total  : Rp {{ orderStore.total }}</h4></li>
@@ -180,7 +180,8 @@ const contactStore = useContact()
 const makeOrder = () => {
   orderStore.storeOrder(router, cartStore.cartItems)
   contactStore.openWhatsApp(orderStore.customerName,orderStore.customerPhone,orderStore.customerAddres,orderStore.storeLocation,orderStore.orderMethod,cartStore.cartItems,orderStore.total)
-  cartStore.cartItems = []
+  cartStore.reset()
+  orderStore.reset()
 };
 
 watchEffect(() => {

@@ -57,6 +57,19 @@ export const useOrder = defineStore({
           this.errors = response.data;
       }
     },
+    reset() {
+      this.orders=null,
+      this.order={},
+      this.customerName= '',
+      this.customerAddres= '',
+      this.customerPhone= '',
+      this.storeLocation= "Sari Mulya Pasarbatang",
+      this.ongkir= 3000,
+      this.orderMethod= 'COD',
+      this.subtotal= 0,
+      this.total= 0,
+      this.formData= new FormData()
+    }
   },
 
   getters: {

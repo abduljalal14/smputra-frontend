@@ -5,7 +5,7 @@ import api from '../api';
 export const useProducts = defineStore({
   id: 'products',
   state: () => ({ 
-    products: [],
+    products: {},
     product: [],
     currentPage: 1,
     lastPage: 1,

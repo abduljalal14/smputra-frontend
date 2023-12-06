@@ -13,13 +13,13 @@
                      <div class="row align-items-center">
                         <div class="col-5 col-md-5 col-lg-6">
                            <div class="d-flex">
-                              <img v-bind:src="productStore.products[cartItem.product_id].image" alt="Ecommerce" class="icon-shape icon-xxl">
+                              <img v-bind:src="productStore.products.find(product => product.id === cartItem.product_id).image" alt="Ecommerce" class="icon-shape icon-xxl">
                               <div class="ms-3">
                                  <!-- title -->
                                  <a href="./pages/shop-single.html" class="text-inherit">
-                                    <h6 class="mb-0">{{ productStore.products[cartItem.product_id].name }}</h6>
+                                    <h6 class="mb-0">{{ productStore.products.find(product => product.id === cartItem.product_id).name }}</h6>
                                  </a>
-                                 <span><small class="text-muted">Rp {{ productStore.products[cartItem.product_id].price }}</small></span>
+                                 <span><small class="text-muted">Rp {{ productStore.products.find(product => product.id === cartItem.product_id).price }}</small></span>
                                  <!-- text -->
                                  <div class="mt-2 small lh-1">
                                     <a href="#!" class="text-decoration-none text-inherit text-danger"  @click="cartStore.deleteCartItem(cartItem.product_id)">
@@ -49,7 +49,7 @@
                         </div>
                         <!-- price -->
                         <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                           <span class="fw-bold">Rp {{ productStore.products[cartItem.product_id].price * cartItem.qty }}</span>
+                           <span class="fw-bold">Rp {{ productStore.products.find(product => product.id === cartItem.product_id).price * cartItem.qty }}</span>
                         </div>
                      </div>
                   </li>

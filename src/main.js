@@ -6,7 +6,7 @@ import router from './router/index'
 // import axios
 import axios from 'axios'
 //import bootstrap css & js
-//import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.css'
 import 'jquery/dist/jquery.min'
 import 'popper.js/dist/popper.min'
 import 'bootstrap/dist/js/bootstrap.min'
@@ -26,6 +26,7 @@ import NewProduct from "./components/NewProduct.vue";
 import ProductCard from "./components/ProductCard.vue";
 import ProductDetails from "./components/ProductDetail.vue";
 import ProducPlacholder from "./components/ProductPlaceholder.vue";
+import DetailOrder from "./views/detail-order/DetailOrder.vue";
 
 
 axios.defaults.withCredentials = true
@@ -48,6 +49,7 @@ app.component("new-product", NewProduct);
 app.component("product-card", ProductCard);
 app.component("product-placeholder", ProducPlacholder);
 app.component("product-detail", ProductDetails);
+app.component("order-detail", DetailOrder);
 
 
 app.use(createPinia())
