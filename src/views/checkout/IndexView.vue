@@ -167,57 +167,37 @@
 import { useCart } from '@/store/cart'
 import { useOrder } from '@/store/order'
 import { useProducts } from '@/store/products';
-import { watchEffect, ref } from 'vue';
+import { watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
+import { useContact } from '@/store/contact'
 
 const router = useRouter()
 const cartStore = useCart()
 const orderStore = useOrder()
 const productStore = useProducts()
-const name = ref(orderStore.customerName)
+const contactStore = useContact()
 
 const makeOrder = () => {
   orderStore.storeOrder(router, cartStore.cartItems)
-  openWhatsApp()
+  contactStore.openWhatsApp(orderStore.customerName,orderStore.customerPhone,orderStore.customerAddres,orderStore.storeLocation,orderStore.orderMethod,cartStore.cartItems,orderStore.total)
+  cartStore.cartItems = []
 };
-
-const phoneNumber = ref('6282325339189'); // Ganti nomor telepon dengan nomor yang sesuai
-const messageText = ref(`*Detail Invoice*
-
-Nama   : ${(name.value)}
-
-Detail Item:
-Produk ID : ${String(cartStore.cartItems[0].product_id)}
-Produk ID : ${String(cartStore.cartItems[1].product_id)}`
-); 
-
-const openWhatsApp = () => {
-  const whatsappLink = `https://wa.me/${phoneNumber.value}?text=${encodeURIComponent(messageText.value)}`;
-  window.open(whatsappLink, '_blank');
-};
-
-
 
 watchEffect(() => {
   // Hitung subtotal setiap kali cartItems berubah
-  orderStore.subtotal = Object.values(cartStore.cartItems).reduce((total, cartItem) => {
-    // Cari produk yang sesuai berdasarkan product_id
-    const product = productStore.products.find(product => product.id === cartItem.product_id);
-
-    // Jika produk ditemukan, tambahkan ke total
-    if (product) {
-        // Hitung subtotal untuk satu item dalam keranjang belanja
-        const itemTotal = product.price * cartItem.qty;
-
-        // Tambahkan ke total keseluruhan
-        total += itemTotal;
-    }
-
-    return total;
-}, 0);
+   orderStore.subtotal = Object.values(cartStore.cartItems).reduce((total, cartItem) => {
+      const product = productStore.products.find(product => product.id === cartItem.product_id);
+      if (product) {
+         const itemTotal = product.price * cartItem.qty;
+         total += itemTotal;
+      }
+      return total;
+   }, 0);
 });
 
 </script>
+
+
 <style lang="css">
 .whatsapp-ico{
     fill: white;

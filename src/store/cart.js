@@ -22,12 +22,9 @@ export const useCart = defineStore({
       const isConfirm =  window.confirm('Apakah Anda yakin ingin menghapus item?') 
       if (isConfirm) {
         const index = this.cartItems.findIndex(item => item.product_id === product_id);
-
       if (index !== -1) {
-        this.cartItems.splice(index, 1); // Menghapus item dari cartItems berdasarkan indeks
+        this.cartItems.splice(index, 1);
       }
-
-      console.log("Deleting", product_id, " from ", this.cartItems);
       }
     },
     increaseQty(item) {
@@ -38,17 +35,8 @@ export const useCart = defineStore({
         if (item.qty > 1) {
           item.qty--;
         } else {
-          // Jika qty adalah 1, hapus cartItem dari keranjang
           this.deleteCartItem(item.product_id);
         }
       },
-    // updateQty(item) {
-    //     if (item.qty < 1) {
-    //         item.total = item.qty * item.product.price;
-    //       } else {
-    //         // Jika qty adalah 1, hapus cartItem dari keranjang
-    //         this.deleteCartItem(item.product);
-    //       }
-    // }
   },
 });

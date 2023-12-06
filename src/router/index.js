@@ -23,6 +23,9 @@ const routes = [
       { path: 'checkout', 
         name: 'checkout',
         component: () => import(/* webpackChunkName: "about" */ '../views/checkout/IndexView.vue') },
+      { path: 'order-details', 
+        name: 'order-details',
+        component: () => import(/* webpackChunkName: "about" */ '../views/detail-order/DetailOrder.vue') },
     ]
   }, 
   {

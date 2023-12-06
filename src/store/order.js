@@ -5,6 +5,7 @@ export const useOrder = defineStore({
   id: 'order',
   state: () => ({ 
     orders:null,
+    order:null,
     customerName: '',
     customerAddres: '',
     customerPhone: '',
@@ -19,11 +20,21 @@ export const useOrder = defineStore({
     async fetchDataOrders() {
       try {
         const response = await api.get('/api/orders');
-        this.orders = response.data.data.data;
+        this.orders = response.data.data.data; 
         this.error = null;
       } catch (err) {
         this.error = 'Error fetching orders data.';
       }
+    },
+    async fetchDataOrder(orderId) {
+      const response = await api.get(`/api/orders/${orderId}`);
+      this.order.name = response.data.data.customer_name
+      this.order.phone = response.data.data.customer_phone
+      this.order.address = response.data.data.customer_address
+      this.order.store = response.data.data.store_location
+      this.order.method = response.data.data.shipping_method
+      this.order.date = response.data.data.created_at
+      this.order.items = response.data.data.order_details
     },
     async storeOrder (router, orderItem){
       this.formData = {
