@@ -26,7 +26,18 @@
          <!-- row -->
          <div class="row">
             <div class="col-lg-6 col-md-12">
-               <div class="px-6 py-4 card shadow-sm">
+               <div class="px-6 py-4 card shadow-sm mb-2">
+                  
+                  <h5 class=" bg-transparent mt-2 text-primary">Lacak Pesanan</h5>
+                  <!-- Nama -->
+                  <div class="mb-3">
+                        <input v-model="orderId" type="text" id="name-input" class="form-control" placeholder="ID Pesanan">
+                        <button @click="searchOrder()" type="submit" class="btn btn-primary">Cari</button>
+                  </div>
+                  
+               </div>
+
+               <div v-if="!orderStore.error" class="px-6 py-4 card shadow-sm">
                   
                   <h5 class=" bg-transparent mt-2 text-primary">Informasi Pengiriman</h5>
                   <h6 class=" bg-transparent">{{ orderStore.order.method }} - ID12345678</h6>
@@ -38,7 +49,7 @@
                   
                </div>
             </div>
-            <div class="col-12 col-md-12  col-lg-6">
+            <div v-if="!orderStore.error" class="col-12 col-md-12  col-lg-6">
                <div class="mt-4 mt-lg-0">
                   <div class="card shadow-sm">
                      <h5 class="px-6 py-4 bg-transparent mb-0 text-primary" >Rincian Item</h5>
@@ -92,8 +103,8 @@
                      </div>
                      <div class="d-grid mb-1 mt-4">
                         
-                        <button @click="generatePdf" class="btn btn-primary btn-lg d-flex justify-content-between align-items-center" type="submit">
-                           Unduh Invoice
+                        <button @click="generatePdf" class="btn btn-primary btn-lg text-center align-items-center" type="submit">
+                           Unduh Struk
                         </button>
                      </div>
                   </div>
@@ -107,10 +118,12 @@
 <script setup>
 import { useOrder } from '@/store/order'
 import { useProducts } from '@/store/products';
-import { onMounted, ref,watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import jsPDF from 'jspdf';
+import '@/assets/js/thermal-receipt-normal';
 
 const subTotal = ref(0);
+const orderId = ref();
 
 const orderStore = useOrder()
 const productStore = useProducts()
@@ -122,6 +135,13 @@ function getSubtotal() {
         if (product) {
           subTotal.value += product.price * orderStore.order.items[i].qty;
         }
+   }
+}
+
+const searchOrder = () => {
+   orderStore.fetchDataOrder(orderId.value);
+   if (!orderStore.error) {
+      getSubtotal()
    }
 }
 
@@ -156,17 +176,16 @@ const generatePdf = () => {
       pdf.text(`Total: $${quantity * unitPrice}`, 5, 35);
 
       // Men-download PDF
-      pdf.save('fake-invoice.pdf');
+      pdf.save('SMPUTRA_NOTA_ID12345678.pdf');
 };
 
 
-watch(() => [orderStore.order, productStore.products], () => {
-      getSubtotal();
-    });
+// watch(() => [orderStore.order, productStore.products], () => {
+//       getSubtotal();
+//     });
 
 onMounted(() => {
    productStore.fetchDataProducts();
-   orderStore.fetchDataOrder(3);
 });
 
 </script>

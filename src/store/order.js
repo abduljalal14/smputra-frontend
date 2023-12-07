@@ -14,19 +14,21 @@ export const useOrder = defineStore({
     orderMethod: 'COD',
     subtotal: 0,
     total: 0,
-    formData: new FormData()
+    formData: new FormData(),
+    error: true
   }),
   actions: {
     async fetchDataOrders() {
       try {
         const response = await api.get('/api/orders');
         this.orders = response.data.data.data; 
-        this.error = null;
+        this.error = false;
       } catch (err) {
-        this.error = 'Error fetching orders data.';
+        this.error = true;
       }
     },
     async fetchDataOrder(orderId) {
+      try {
       const response = await api.get(`/api/orders/${orderId}`);
       this.order.name = response.data.data.customer_name
       this.order.phone = response.data.data.customer_phone
@@ -36,6 +38,10 @@ export const useOrder = defineStore({
       this.order.date = response.data.data.created_at
       this.order.items = response.data.data.order_details
       console.log('isi dari order name: ', this.order.name)
+      this.error = false;
+    } catch (err) {
+      this.error = true;
+    }
     },
     async storeOrder (router, orderItem){
       this.formData = {
