@@ -6,6 +6,8 @@ export const useOrder = defineStore({
   state: () => ({ 
     orders:null,
     order:{},
+    isExist: null,
+    orderId: '',
     customerName: '',
     customerAddres: '',
     customerPhone: '',
@@ -27,9 +29,18 @@ export const useOrder = defineStore({
         this.error = true;
       }
     },
-    async fetchDataOrder(orderId) {
+    async fetchDataOrder(order_id, query = '') {
+      console.log('data order_id', order_id)
+      console.log('data qury', query)
+      console.log('type order_id', typeof order_id)
+
+      console.log('test 2 passed')
       try {
-      const response = await api.get(`/api/orders/${orderId}`);
+        console.log('test 3 passed')
+      const response = await api.get(`/api/orders/`,{ params: {query} });
+      console.log('test 4 passed')
+      this.order.orderId = response.data.data.order_id
+      console.log('test 5 passed')
       this.order.name = response.data.data.customer_name
       this.order.phone = response.data.data.customer_phone
       this.order.address = response.data.data.customer_address
@@ -41,11 +52,22 @@ export const useOrder = defineStore({
       this.error = false;
     } catch (err) {
       this.error = true;
+      console.log(err)
     }
     },
     async storeOrder (router, orderItem){
+      // mebuat order_id
+      const currentDate = new Date();
+      const day = currentDate.getDate().toString().padStart(2, '0');
+      const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+      const year = currentDate.getFullYear().toString().substr(-2);
+      const dateString = day + month + year;
+      const randomDigits = Math.floor(1000 + Math.random() * 9000);
+      this.orderId = dateString + randomDigits;
+      // membuat formdata
       this.formData = {
         "customer_name": this.customerName,
+        "order_id": this.orderId,
         "customer_phone": this.customerPhone,
         "customer_address": this.customerAddres,
         "store_location": this.storeLocation,
@@ -79,6 +101,13 @@ export const useOrder = defineStore({
   },
 
   getters: {
+    formatted() {
+      const date = new Date(this.order.date)
+      const options = { day: 'numeric', month: 'long', year: 'numeric' }
+      console.log(date)
+      console.log(date.toLocaleDateString('id-ID', options))
+      return date.toLocaleDateString('id-ID', options)
+  },
     invalid() {
       return this.customerName === '' || this.customerAddres === '' || this.customerPhone === '';
   },

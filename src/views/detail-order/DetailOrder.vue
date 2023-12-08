@@ -37,10 +37,14 @@
                   
                </div>
 
+               <div v-if="orderStore.isExist == false" class="px-6 py-4 card shadow-sm">
+                  <h5 class=" bg-transparent mt-2">Pesanan tidak ditemukan, masukan ID pemesanan yang valid</h5>
+               </div>
+
                <div v-if="!orderStore.error" class="px-6 py-4 card shadow-sm">
                   
                   <h5 class=" bg-transparent mt-2 text-primary">Informasi Pengiriman</h5>
-                  <h6 class=" bg-transparent">{{ orderStore.order.method }} - ID12345678</h6>
+                  <h6 class=" bg-transparent">{{ orderStore.order.method }} - ID Pemesanan: {{ orderStore.order.orderId }}</h6>
                   
                   <h5 class=" bg-transparent mt-2 text-primary">Alamat Pengiriman</h5>
                   <h6 class=" bg-transparent">{{ orderStore.order.name }}</h6>
@@ -118,9 +122,9 @@
 <script setup>
 import { useOrder } from '@/store/order'
 import { useProducts } from '@/store/products';
-import { onMounted, ref } from 'vue'
+import { onMounted, ref,watchEffect } from 'vue'
 import jsPDF from 'jspdf';
-import '@/assets/js/thermal-receipt-normal';
+import '@/assets/js/consolas-normal';
 
 const subTotal = ref(0);
 const orderId = ref();
@@ -128,55 +132,106 @@ const orderId = ref();
 const orderStore = useOrder()
 const productStore = useProducts()
 
-function getSubtotal() {
-   subTotal.value = 0;
-   for (var i = 0; i < orderStore.order.items.length; i++) {
-      const product = productStore.products.find(product => product.id === orderStore.order.items[i].product_id);
-        if (product) {
-          subTotal.value += product.price * orderStore.order.items[i].qty;
-        }
+
+watchEffect(() => {
+   try {
+      subTotal.value = 0;
+
+      if (orderStore.order && orderStore.order.items && productStore.products) {
+         orderStore.order.items.forEach(item => {
+            const product = productStore.products.find(product => product.id === item.product_id);
+            if (product) {
+               subTotal.value += product.price * item.qty;
+            }
+         });
+      }
+   } catch (error) {
+      console.error('Error in watchEffect:', error);
    }
-}
+});
+
+
 
 const searchOrder = () => {
-   orderStore.fetchDataOrder(orderId.value);
-   if (!orderStore.error) {
-      getSubtotal()
-   }
+   console.log('test 1 passed')
+   orderStore.fetchDataOrder(1,orderId.value);
 }
+
+const formatCurrency = (number) => {
+   const formattedNumber = number.toLocaleString('id-ID');
+   return formattedNumber;
+}
+
 
 const generatePdf = () => {
        // Variabel
-       const productName = 'Widget';
-      const quantity = 5;
-      const unitPrice = 10;
+      const noTrans = '12345678';
+      const imgData = require('@/assets/smputra-logo.png');
 
-      // Tentukan lebar kertas thermal kasir 80mm dalam satuan mm
       const paperWidth = 80;
-
-      // Buat instance dari jsPDF dengan menentukan lebar dan panjang dokumen
+      const paperHeight = 90+(10*orderStore.order.items.length);
       const pdf = new jsPDF({
         unit: 'mm',
-        format: [paperWidth, 210], // 210 adalah panjang default, sesuaikan dengan kebutuhan
+        format: [paperWidth, paperHeight], 
       });
 
-      // Atur jenis font menjadi monospace
-      pdf.setFont('courier');
+      // header
+      pdf.addImage(imgData,'PNG', 15, 9, 50, 10)
+      //pdf.setFont('courier');
+      pdf.setFont('consolas', 'normal');
+      pdf.setFontSize(8);
+      pdf.text('Jl. Raya Pantura No. 18, Kaligangsa', paperWidth/2 , 28, { align: 'center' });
+      pdf.text('Wetan, Brebes', paperWidth/2 , 31, { align: 'center' });
+      pdf.text('----------------------------------------', 6, 36);
+      pdf.text(`Metode Pengiriman  : ${orderStore.order.method}`, 7, 39);
+      pdf.text(`ID Pemesanan       : ${orderStore.order.orderId}`, 7, 42);
+      pdf.text(`Tanggal            : ${orderStore.formatted}`, 7, 45);
+      pdf.text('----------------------------------------', 6, 49);
 
-      // Atur ukuran teks menjadi 9 pt
-      pdf.setFontSize(9);
+      // items
+      let yOffset = 52; // start posisi y
+      orderStore.order.items.forEach(item => {
+        const product_name = productStore.products.find(product => product.id === item.product_id).name;
+        const product_price = productStore.products.find(product => product.id === item.product_id).price;
 
-      // Menambahkan konten ke PDF
-      pdf.text('Fake Invoice', 5, 5);
-      pdf.text('--------------------------', 5, 10);
-      pdf.text(`Product Name: ${productName}`, 5, 15);
-      pdf.text(`Quantity: ${quantity}`, 5, 20);
-      pdf.text(`Unit Price: $${unitPrice}`, 5, 25);
-      pdf.text('--------------------------', 5, 30);
-      pdf.text(`Total: $${quantity * unitPrice}`, 5, 35);
+        pdf.text(product_name, 7, yOffset);
+        yOffset += 3; // jarak ke baris berikutnya
+        pdf.text(`${item.qty}  x  ${formatCurrency(product_price)}     =`, 45, yOffset, { align: 'right' });
+        pdf.text(formatCurrency(item.qty*product_price).toString(), 65, yOffset, { align: 'right' });
+        yOffset += 3;
+      });
 
-      // Men-download PDF
-      pdf.save('SMPUTRA_NOTA_ID12345678.pdf');
+      // rincian total
+      pdf.text('----------------------------------------', 6, yOffset);
+      yOffset += 3;
+      pdf.text('SUBTOTAL   :', 39, yOffset, { align: 'right' });
+      pdf.text(formatCurrency(subTotal.value).toString(), 65, yOffset, { align: 'right' });
+      yOffset += 3;
+      pdf.text('ONGKOS KIRIM   :', 39, yOffset, { align: 'right' });
+      pdf.text(formatCurrency(orderStore.ongkir).toString(), 65, yOffset, { align: 'right' });
+      yOffset += 4;
+      pdf.setFontSize(12);
+      pdf.text('TOTAL  :', 39.5, yOffset, { align: 'right' });
+      pdf.text(formatCurrency(subTotal.value+orderStore.ongkir).toString(), 65, yOffset, { align: 'right' });
+
+      // footer
+      pdf.setFontSize(8);
+      yOffset += 7;
+      pdf.text('Terima Kasih', paperWidth/2 , yOffset, { align: 'center' });
+      yOffset += 3;
+      pdf.text('selamat belanja kembali', paperWidth/2 , yOffset, { align: 'center' });
+      yOffset += 3;
+      pdf.text('barang yang sudah dibeli tidak dapat', paperWidth/2 , yOffset, { align: 'center' });
+      yOffset += 3;
+      pdf.text('dikembalikan / ditukar', paperWidth/2 , yOffset, { align: 'center' });
+      yOffset += 3;
+      pdf.text('kritik, saran & layanan pesan antar', paperWidth/2 , yOffset, { align: 'center' });
+      yOffset += 4;
+      pdf.text('www.sarimulya.com', paperWidth/2 , yOffset, { align: 'center' });
+      
+      
+      // Men-download PDF 
+      pdf.save(`SMPUTRA_NOTA_ID${noTrans}.pdf`);
 };
 
 

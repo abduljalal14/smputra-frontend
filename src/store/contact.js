@@ -13,7 +13,7 @@ export const useContact = defineStore({
   }),
   actions: {
     // (orderStore.customerName,orderStore.customerPhone,orderStore.customerAddres,orderStore.storeLocation,orderStore.orderMethod,cartStore.cartItems,orderStore.total)
-    openWhatsApp(name,phone,address,store,method,items,total){
+    openWhatsApp(name,phone,address,store,method,items,total,orderId){
         let noWA = ''
         let ongkir = ''
         if (store=='Sari Mulya Pasarbatang') {
@@ -42,14 +42,15 @@ ${ongkir}
 ______________________________
 *Total: Rp. ${total}*
 
-berikut adalah data diri saya:
+Berikut adalah alamat saya:
 Nama: *${name}*
-No. HP: *${phone}*
-Alamat: *${address}*
+No. HP: ${phone}
+Alamat: ${address}
 
-metode pengirimian: *${method}*
+Metode pengirimian: *${method}*
 
-Lihat detail pesanan saya: link`
+ID Pemesanan: *${orderId}*
+Lihat detail pesanan saya: http://localhost:8080/order-details`
 
 
         console.log('Isi dari message', this.message);

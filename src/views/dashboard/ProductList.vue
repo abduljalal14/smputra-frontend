@@ -5,7 +5,7 @@
 <table class="table table-bordered">
                             <thead class="bg-dark text-white">
                                 <tr>
-                                    <th scope="col">Image</th>
+                                    <th scope="col">Image</th> 
                                     <th scope="col">Name</th>
                                     <th scope="col">Price</th>
                                     <th scope="col" style="width:15%">Actions</th>
@@ -27,7 +27,7 @@
                                     <td>{{ product.price }}</td>
                                     <td class="text-center">
                                         <router-link :to="{ name: 'edit-product', params:{id: product.id} }" class="btn btn-sm btn-primary rounded-sm shadow border-0 me-2">EDIT</router-link>
-                                        <button  @click.prevent="productStore.deleteProduct(product.id)" class="btn btn-sm btn-danger rounded-sm shadow border-0">DELETE</button>
+                                        <button  @click.prevent="confirmDelete(product.id)" class="btn btn-sm btn-danger rounded-sm shadow border-0">DELETE</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -59,6 +59,12 @@
     import { onMounted } from 'vue';
 
     const productStore = useProducts()
+
+    const confirmDelete = (productId) => {
+      if (window.confirm("Are you sure you want to delete this product?")) {
+        productStore.deleteProduct(productId)
+      }
+    };
 
     onMounted(() => {
         productStore.fetchDataProducts();

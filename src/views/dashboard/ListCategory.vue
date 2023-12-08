@@ -5,7 +5,8 @@
  <table class="table table-bordered">
                              <thead class="bg-dark text-white">
                                  <tr>
-                                     <th scope="col">Id</th>
+                                     <th scope="col">Id</th> 
+                                     <th scope="col">Image</th> 
                                      <th scope="col">Category Name</th>
                                      <th scope="col" style="width:30%">Actions</th>
                                  </tr>
@@ -20,6 +21,9 @@
                                  </tr>
                                  <tr v-else v-for="(category, index) in categoryStore.categories" :key="index">
                                      <td>{{ category.id }}</td>
+                                     <td class="text-center">
+                                        <img :src="product.image" width="200" class="rounded-3"/>
+                                     </td>
                                      <td>{{ category.name }}</td>
                                      <td class="text-center">
                                          <button @click="editCategory(category)" data-bs-toggle="modal" data-bs-target="#editCategoryModal" class="btn btn-sm btn-primary rounded-sm shadow border-0 me-2">EDIT</button>
@@ -43,6 +47,13 @@
             <label for="name" class="form-label">Category Name</label>
             <input v-model="categoryStore.category.name" type="text" class="form-control" id="name"/>
           </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Image</label>
+              <input type="file" class="form-control" @change="handleFileChange($event)">
+            <div v-if="categoryStore.errors.image" class="alert alert-danger mt-2">
+              <span>{{ categoryStore.errors.image[0] }}</span>
+            </div>
+          </div>         
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -63,6 +74,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Image</label>
+             <input type="file" class="form-control" @change="handleFileChange($event)">
+             <div v-if="categoryStore.errors.image" class="alert alert-danger mt-2">
+                <span>{{ categoryStore.errors.image[0] }}</span>
+             </div>
+          </div>
           <div class="mb-3">
             <label for="name" class="form-label">Category Name</label>
             <input v-model="categoryStore.category.name" type="text" class="form-control" id="name" />
@@ -89,6 +107,12 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const categoryStore = useCategory()
 
+
+//method for handle file changes
+const handleFileChange = (e) => {
+        //assign file to state
+        categoryStore.category.image = e.target.files[0];
+    };
 
 const editCategory = (category) => {
     categoryStore.category = category

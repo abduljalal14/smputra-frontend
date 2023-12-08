@@ -25,6 +25,7 @@ export const useCategory = defineStore({
     async storeCategory (router){
       let formData = new FormData();
       formData.append("name", this.category.name);
+      formData.append("image", this.category.image);
       const response = await api.post('/api/categories', formData)
       try{
           this.category = []
@@ -39,6 +40,7 @@ export const useCategory = defineStore({
     async updateCategory(router) {
       let formData = new FormData();
       formData.append("name", this.category.name);
+      formData.append("image", this.category.image);
       formData.append("_method", "PATCH");
       //store data with API
       const response = await api.post(`/api/categories/${this.category.id}`, formData)
