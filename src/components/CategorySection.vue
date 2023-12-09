@@ -17,14 +17,15 @@
       :modules="modules"
       class="categorySwiper"
     >
-    <swiper-slide v-for="(n, index) in 10" :key="index">
+    <swiper-slide v-for="(category, index) in categoryStore.categories" :key="index">
       <a href="#"
           class="text-decoration-none text-inherit">
           <div class="card card-product" style="max-width: 390px;">
             <div class="card-body text-center py-8">
-              <img src="../assets/images/category/category-tea-coffee-drinks.jpg"
+              <img v-bind:src="category.image"
                 alt="Grocery Ecommerce Template" class="mb-3" />
-              <div class="text-truncate">Snack & Munchies
+                
+              <div class="text-truncate">{{ category.name }}
               </div>
             </div>
           </div>
@@ -39,6 +40,10 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { useCategory } from "@/store/categories";
+
+
+const categoryStore = useCategory();
 
 const modules = [Autoplay, Pagination, Navigation];
 
@@ -55,8 +60,9 @@ const updateSlidesView = () => {
 };
 
 onMounted(() => {
+  categoryStore.fetchDataCategory();
   updateSlidesView();
-  window.addEventListener('resize', updateSlidesView);
+  window.addEventListener('resize', updateSlidesView); 
 });
 
 onBeforeUnmount(() => {

@@ -6,7 +6,6 @@ export const useOrder = defineStore({
   state: () => ({ 
     orders:null,
     order:{},
-    isExist: null,
     orderId: '',
     customerName: '',
     customerAddres: '',
@@ -17,7 +16,8 @@ export const useOrder = defineStore({
     subtotal: 0,
     total: 0,
     formData: new FormData(),
-    error: true
+    error: true,
+    errorMessage: ""
   }),
   actions: {
     async fetchDataOrders() {
@@ -29,15 +29,11 @@ export const useOrder = defineStore({
         this.error = true;
       }
     },
-    async fetchDataOrder(order_id, query = '') {
-      console.log('data order_id', order_id)
-      console.log('data qury', query)
-      console.log('type order_id', typeof order_id)
-
+    async fetchDataOrder(order_id) {
       console.log('test 2 passed')
       try {
         console.log('test 3 passed')
-      const response = await api.get(`/api/orders/`,{ params: {query} });
+      const response = await api.get(`/api/orders/${order_id}`);
       console.log('test 4 passed')
       this.order.orderId = response.data.data.order_id
       console.log('test 5 passed')
@@ -54,6 +50,41 @@ export const useOrder = defineStore({
       this.error = true;
       console.log(err)
     }
+    },
+    async fetchDataOrderById(order_id) {
+      try {
+        console.log('test 3 passed');
+        const response = await api.get(`/api/order/id/${order_id}`);
+        console.log('test 4 passed');
+      
+        const orderData = response.data.order;
+      
+        // Pastikan orderData tidak null atau undefined sebelum mengakses propertinya
+        if (orderData) {
+          this.order.name = orderData.customer_name || '';
+          this.order.phone = orderData.customer_phone || '';
+          this.order.orderId = orderData.order_id || '';
+          this.order.address = orderData.customer_address || '';
+          this.order.store = orderData.store_location || '';
+          this.order.method = orderData.shipping_method || '';
+          this.order.date = orderData.created_at || '';
+          this.order.items = orderData.order_details || [];
+          console.log('test 5 passed');
+          console.log('isi dari order name: ', this.order.name);
+          this.error = false;
+          this.errorMessage = ""
+        } 
+      } catch (err) {
+        this.error = true;
+        // Cek apakah ada pesan kesalahan dalam response.data.error
+        if (err.response && err.response.data && err.response.data.error) {
+          this.errorMessage = err.response.data.error;
+        } else {
+          this.errorMessage = 'Terjadi kesalahan saat mengambil data order.';
+        }
+        console.error(this.errorMessage);
+        console.error(err);
+      }
     },
     async storeOrder (router, orderItem){
       // mebuat order_id

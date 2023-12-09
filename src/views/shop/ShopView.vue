@@ -23,9 +23,9 @@
                               <h5 class="mb-3">Kategori</h5>
                               <!-- nav -->
                               <ul class="nav nav-category" id="categoryCollapseMenu">
-                                 <li v-for="(item, index) in 10" :key="index"  class="nav-item border-bottom w-100">
-                                    <a href="#" class="nav-link collapsed">
-                                       Kategori {{ item }}
+                                 <li v-for="(category, index) in categoryStore.categories" :key="index"  class="nav-item border-bottom w-100">
+                                    <a href="#" class="nav-link collapsed" @click="categoryStore.setSelectedCategory(category)">
+                                       {{ category.name }}
                                     </a>          
                                  </li>
                               </ul>
@@ -41,6 +41,7 @@
                         <!-- card body -->
                         <div class="card-body p-9">
                            <h2 class="mb-0 fs-1">Kategori Saat Ini</h2>
+                           <h2 v-if="categoryStore.selectedCategory" class="mb-0 fs-1">{{ categoryStore.selectedCategory.name }}</h2>
                         </div>
                      </div>
                      <!-- list icon -->
@@ -118,14 +119,24 @@
 
 </template>
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import { useProducts } from "@/store/products";
+import { useCategory } from "@/store/categories";
 
 const productStore = useProducts();
+const categoryStore = useCategory();
 
+function search() {
+  productStore.fetchDataProducts(productStore.currentPage, productStore.query, categoryStore.selectedCategory);
+}
+
+watch(() => categoryStore.selectedCategory, () => {
+  search(); // Mencari produk setiap kali kategori berubah
+});
 
 onMounted(() => {
   productStore.fetchDataProducts();
+  categoryStore.fetchDataCategory()
 });
 </script>
 <style lang="">

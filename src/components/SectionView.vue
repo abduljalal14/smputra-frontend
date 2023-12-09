@@ -68,7 +68,7 @@ watch(() => categoryStore.selectedCategory, () => {
   selectedCategory.value = categoryStore.selectedCategory;
 
   if (selectedCategory.value !== null) {
-    categoryName.value = categoryStore.selectedCategory.name;
+    categoryName.value = categoryStore.selectedCategory.name; 
   } else {
     selectedCategory.value = null; // kembalikan ke null 
   }

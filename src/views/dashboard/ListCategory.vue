@@ -22,7 +22,8 @@
                                  <tr v-else v-for="(category, index) in categoryStore.categories" :key="index">
                                      <td>{{ category.id }}</td>
                                      <td class="text-center">
-                                        <img :src="product.image" width="200" class="rounded-3"/>
+                                        <!-- <img src="../../assets/images/category/category-atta-rice-dal.jpg" width="200" class="rounded-3"/> -->
+                                        <img v-bind:src="category.image" width="200" class="rounded-3"/>
                                      </td>
                                      <td>{{ category.name }}</td>
                                      <td class="text-center">
@@ -50,9 +51,9 @@
           <div class="mb-3">
             <label class="form-label fw-bold">Image</label>
               <input type="file" class="form-control" @change="handleFileChange($event)">
-            <div v-if="categoryStore.errors.image" class="alert alert-danger mt-2">
+            <!-- <div v-if="categoryStore.errors.image" class="alert alert-danger mt-2">
               <span>{{ categoryStore.errors.image[0] }}</span>
-            </div>
+            </div> -->
           </div>         
       </div>
       <div class="modal-footer">
@@ -77,9 +78,9 @@
           <div class="mb-3">
             <label class="form-label fw-bold">Image</label>
              <input type="file" class="form-control" @change="handleFileChange($event)">
-             <div v-if="categoryStore.errors.image" class="alert alert-danger mt-2">
+             <!-- <div v-if="categoryStore.errors.image" class="alert alert-danger mt-2">
                 <span>{{ categoryStore.errors.image[0] }}</span>
-             </div>
+             </div> -->
           </div>
           <div class="mb-3">
             <label for="name" class="form-label">Category Name</label>

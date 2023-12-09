@@ -32,13 +32,13 @@
                   <!-- Nama -->
                   <div class="mb-3">
                         <input v-model="orderId" type="text" id="name-input" class="form-control" placeholder="ID Pesanan">
-                        <button @click="searchOrder()" type="submit" class="btn btn-primary">Cari</button>
+                        <button @click="searchOrderById()" type="submit" class="btn btn-primary">Cari</button>
                   </div>
                   
                </div>
 
-               <div v-if="orderStore.isExist == false" class="px-6 py-4 card shadow-sm">
-                  <h5 class=" bg-transparent mt-2">Pesanan tidak ditemukan, masukan ID pemesanan yang valid</h5>
+               <div v-if="orderStore.errorMessage == 'ID Order tidak ditemukan'" class="alert alert-danger" role="alert">
+                  Pesanan tidak ditemukan, silakan masukan ID pemesanan yang benar
                </div>
 
                <div v-if="!orderStore.error" class="px-6 py-4 card shadow-sm">
@@ -152,9 +152,14 @@ watchEffect(() => {
 
 
 
-const searchOrder = () => {
+// const searchOrder = () => {
+//    console.log('test 1 passed')
+//    orderStore.fetchDataOrder(orderId.value);
+// }
+
+const searchOrderById = () => {
    console.log('test 1 passed')
-   orderStore.fetchDataOrder(1,orderId.value);
+   orderStore.fetchDataOrderById(orderId.value);
 }
 
 const formatCurrency = (number) => {
