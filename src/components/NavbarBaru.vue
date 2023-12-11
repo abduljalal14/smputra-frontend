@@ -86,14 +86,14 @@
             <i class="bi bi-search"></i>
             SEARCH
           </div>
-          <button type="button" class="close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <button id="closeBtn" type="button" class="close text-dark" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>  
           </button>
         </div>
 
         <div class="modal-body">
-          <input type="text" id="search-ajax" class="form-control form-control-lg" placeholder="Apa yang ingin Anda beli?"
-            autofocus="">
+          <input v-model="productStore.query" type="text" id="search-ajax" class="form-control form-control-lg" placeholder="Apa yang ingin Anda beli?"
+            autofocus="" @keyup.enter="handleSearch">
         </div>
       </div>
     </div>
@@ -114,9 +114,36 @@
 <script setup>
 import { useRoute } from 'vue-router'
 import { useCart } from '@/store/cart'
+import { useProducts } from "@/store/products";
+import { useCategory } from "@/store/categories";
+
+const productStore = useProducts();
+const categoryStore = useCategory();
+
 
 
 const cartStore = useCart()
+
+
+function handleSearch() {
+  search();
+  triggerButtonClick(); // Tambahkan pemanggilan untuk menutup modal
+}
+
+function search() {
+  productStore.fetchDataProducts(productStore.currentPage, productStore.query, categoryStore.selectedCategory);
+}
+
+const triggerButtonClick = () => {
+  document.getElementById('closeBtn').click();
+  };
+// function closeSearchModal() {
+//   // Gantilah "#search" dengan ID modal sesuai kebutuhan Anda
+//   const searchModal = new Modal(document.getElementById('search'));
+//   searchModal.hide();
+// }
+
+
 
 const route = useRoute()
 </script>

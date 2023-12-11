@@ -86,6 +86,7 @@ export const useOrder = defineStore({
         console.error(err);
       }
     },
+    
     async storeOrder (router, orderItem){
       // mebuat order_id
       const currentDate = new Date();
@@ -114,6 +115,16 @@ export const useOrder = defineStore({
       catch(err){
           //assign response error data to state "errors"
           this.errors = response.data;
+      }
+    },
+    async deleteCategory(id) {
+      try {
+        // Tambahkan logika penghapusan sesuai kebutuhan
+        await api.delete(`/api/orders/${id}`);
+        // Setelah penghapusan berhasil, perbarui data order
+        this.fetchDataOrders();
+      } catch (err) {
+        this.error = 'Error deleting order.';
       }
     },
     reset() {

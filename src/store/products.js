@@ -15,17 +15,16 @@ export const useProducts = defineStore({
   }),
   actions: {
     async fetchDataProducts(page = 1, query = '', category = null) {
+      this.products = {}
       try {
         console.log('Fetching Products:', page, query, category);
         const response = await api.get('/api/products', { params: { page, query, category } });
         this.products = response.data.data.data;
         this.currentPage = response.data.data.current_page;
         this.lastPage = response.data.data.last_page;
-        console.log('Tipe Data Products:', typeof this.products);
-        console.log('Isi Data Products:', this.products);
         this.error = null;
       } catch (err) {
-        this.error = 'Error fetching category data.';
+        this.error = 'Gagal Fetching Data Produk';
       }
     },
     async fetchDataProduct(productId) {

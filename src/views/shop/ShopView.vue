@@ -23,6 +23,11 @@
                               <h5 class="mb-3">Kategori</h5>
                               <!-- nav -->
                               <ul class="nav nav-category" id="categoryCollapseMenu">
+                                 <li class="nav-item border-bottom w-100">
+                                    <a href="#" class="nav-link collapsed" @click="categoryStore.selectedCategory=null">
+                                       Semua Kategori
+                                    </a>
+                                 </li>
                                  <li v-for="(category, index) in categoryStore.categories" :key="index"  class="nav-item border-bottom w-100">
                                     <a href="#" class="nav-link collapsed" @click="categoryStore.setSelectedCategory(category)">
                                        {{ category.name }}
@@ -40,16 +45,16 @@
                      <div class="card mb-4 bg-light border-0">
                         <!-- card body -->
                         <div class="card-body p-9">
-                           <h2 class="mb-0 fs-1">Kategori Saat Ini</h2>
-                           <h2 v-if="categoryStore.selectedCategory" class="mb-0 fs-1">{{ categoryStore.selectedCategory.name }}</h2>
+                           <h2 v-if="categoryStore.selectedCategory == null" class="mb-0 fs-1">Semua Kategori</h2>
+                           <h2 v-if="categoryStore.selectedCategory" class="mb-0 fs-1">Kategori: {{ categoryStore.selectedCategory.name }}</h2>
                         </div>
                      </div>
                      <!-- list icon -->
                      <div class="d-lg-flex justify-content-between align-items-center">
                         <div class="mb-3 mb-lg-0">
                            <p class="mb-0">
-                              <span class="text-dark">24</span>
-                              Products found
+                              <span class="text-dark">{{ productStore.products.length }}</span>
+                              Produk ditemukan
                            </p>
                         </div>
 
@@ -71,7 +76,7 @@
                     <!-- Product List -->
                      <!-- row -->
                      
-                     <div v-if="productStore.products.length === 0" class="row g-4 row-cols-xl-4 row-cols-lg-3 row-cols-2 row-cols-md-2 mt-2">
+                     <div v-if="productStore.products === 0" class="row g-4 row-cols-xl-4 row-cols-lg-3 row-cols-2 row-cols-md-2 mt-2">
                         <!-- Jika tidak ada produk, tampilkan placeholder -->
                         <div v-for="(item, index) in 10" :key="index" class="col">
                         <product-placeholder></product-placeholder>
@@ -88,26 +93,27 @@
 
                      <div class="row mt-8">
                         <div class="col">
-                           <!-- nav -->
-                           <nav>
-                              <ul class="pagination">
-                                 <li class="page-item disabled">
-                                    <a class="page-link mx-1" href="#" aria-label="Previous">
-                                       <i class="feather-icon icon-chevron-left"></i>
-                                    </a>
-                                 </li>
-                                 <li class="page-item"><a class="page-link mx-1 active" href="#">1</a></li>
-                                 <li class="page-item"><a class="page-link mx-1" href="#">2</a></li>
 
-                                 <li class="page-item"><a class="page-link mx-1" href="#">...</a></li>
-                                 <li class="page-item"><a class="page-link mx-1" href="#">12</a></li>
-                                 <li class="page-item">
-                                    <a class="page-link mx-1" href="#" aria-label="Next">
-                                       <i class="feather-icon icon-chevron-right"></i>
-                                    </a>
-                                 </li>
-                              </ul>
-                           </nav>
+
+                           <!-- Pagination -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item" :class="{ 'disabled': productStore.currentPage === 1 }">
+            <a class="page-link mx-1" @click="productStore.fetchDataProducts(productStore.currentPage - 1)" :disabled="productStore.currentPage === 1" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" v-for="page in productStore.lastPage" :key="page" :class="{ 'active': productStore.currentPage === page }">
+            <a class="page-link mx-1" @click="productStore.fetchDataProducts(page)">{{ page }}</a>
+          </li>
+          <li class="page-item" :class="{ 'disabled': productStore.currentPage === productStore.lastPage }">
+            <a class="page-link mx-1" @click="productStore.fetchDataProducts(productStore.currentPage + 1)" :disabled="productStore.currentPage === productStore.lastPage" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+               
                         </div>
                      </div>
                   </section>
@@ -127,6 +133,7 @@ const productStore = useProducts();
 const categoryStore = useCategory();
 
 function search() {
+   productStore.query = ''
   productStore.fetchDataProducts(productStore.currentPage, productStore.query, categoryStore.selectedCategory);
 }
 
