@@ -6,7 +6,7 @@ export const useAuth = defineStore({
   state: () => ({
     loggedIn: localStorage.getItem('loggedIn'),
     token: localStorage.getItem('token'),
-    user: [],
+    user: {},
     validation: [],
     loginFailed: null,
     error: null

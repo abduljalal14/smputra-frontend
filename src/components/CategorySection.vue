@@ -18,18 +18,18 @@
       class="categorySwiper"
     >
     <swiper-slide v-for="(category, index) in categoryStore.categories" :key="index">
-      <a href="#"
+      <router-link :to="{ name: 'shop' }" @click="categoryStore.setSelectedCategory(category)"
           class="text-decoration-none text-inherit">
           <div class="card card-product" style="max-width: 390px;">
             <div class="card-body text-center py-8">
               <img v-bind:src="category.image"
                 alt="Grocery Ecommerce Template" class="mb-3" />
                 
-              <div class="text-truncate">{{ category.name }}
-              </div>
+              <div class="text-truncate">{{ category.name }}</div>
+              
             </div>
           </div>
-          </a>
+          </router-link>
     </swiper-slide>
     </swiper>
             </div>

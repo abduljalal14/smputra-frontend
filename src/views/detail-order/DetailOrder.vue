@@ -89,7 +89,7 @@
                               <span>Rp {{ subTotal }}</span>
                            </li>
                            <!-- list group item -->
-                           <li v-if="orderStore.orderMethod == 'COD'" class="list-group-item d-flex justify-content-between align-items-start">
+                           <li v-if="orderStore.order.method == 'COD'" class="list-group-item d-flex justify-content-between align-items-start">
                               <div class="me-auto">
                                  <div>Biaya Ongkir</div>
                               </div>
@@ -100,8 +100,9 @@
                               <div class="me-auto">
                                  <div class="fw-bold">Total</div>
                               </div>
-                              <span v-if="orderStore.order.method != 'COD'" class="fw-bold">Rp. {{ orderStore.subtotal }}</span>
-                              <span v-else class="fw-bold">Rp. {{ subTotal+orderStore.ongkir }}</span>
+                              
+                              <span v-if="orderStore.order.method == 'COD'" class="fw-bold">Rp. {{ subTotal+orderStore.ongkir }}</span>
+                              <span v-else class="fw-bold">Rp. {{ subTotal }}</span>
                            </li>
                         </ul>
                      </div>

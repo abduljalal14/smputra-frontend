@@ -141,9 +141,10 @@ watch(() => categoryStore.selectedCategory, () => {
   search(); // Mencari produk setiap kali kategori berubah
 });
 
+
 onMounted(() => {
-  productStore.fetchDataProducts();
-  categoryStore.fetchDataCategory()
+   categoryStore.fetchDataCategory()
+  search();
 });
 </script>
 <style lang="">

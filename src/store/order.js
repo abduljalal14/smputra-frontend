@@ -4,7 +4,7 @@ import api from '../api';
 export const useOrder = defineStore({
   id: 'order',
   state: () => ({ 
-    orders:null,
+    orders:[],
     order:{},
     orderId: '',
     customerName: '',

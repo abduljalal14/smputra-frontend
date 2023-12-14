@@ -22,7 +22,7 @@
                                  <tr v-else v-for="(category, index) in categoryStore.categories" :key="index">
                                      <td>{{ category.id }}</td>
                                      <td class="text-center">
-                                        <!-- <img src="../../assets/images/category/category-atta-rice-dal.jpg" width="200" class="rounded-3"/> -->
+                                        <!-- <img src="../../assets/images/category/category-atta-rice-dal.jpg" width="200" class="rounded-3"/> --> 
                                         <img v-bind:src="category.image" width="200" class="rounded-3"/>
                                      </td>
                                      <td>{{ category.name }}</td>

@@ -11,6 +11,7 @@
                   <router-link :to="{ name: 'profile' }" class="list-group-item text-dark text-decoration-none">PROFILE</router-link>
                   <router-link :to="{ name: 'products' }" class="list-group-item text-dark text-decoration-none">PRODUCT LIST</router-link>
                   <router-link :to="{ name: 'categories' }" class="list-group-item text-dark text-decoration-none">CATEGORY LIST</router-link>
+                  <router-link :to="{ name: 'orders' }" class="list-group-item text-dark text-decoration-none">ORDER LIST</router-link>
                   <li @click="userStore.logout(router)" class="list-group-item text-dark text-decoration-none" style="cursor: pointer">LOGOUT</li>
                 </ul>
               </div>
@@ -42,6 +43,7 @@
       router.push({ name: 'login' });
       }
       await userStore.fetchDataUser();
+      console.log("test 4 passed", userStore.user.name)
   });
 
   watch(() => userStore.loggedIn, () => {
