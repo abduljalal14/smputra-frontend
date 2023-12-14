@@ -15,46 +15,33 @@
       :modules="modules"
       class="banner"
     >
-    <swiper-slide
-      ><img
-        src="https://www.yogyagroup.com/storage/banner/6524ae4b7d84b_1696902731.jpg" /></swiper-slide
-    ><swiper-slide
-      ><img
-        src="https://www.yogyagroup.com/storage/banner/6552e2844723f_1699930756.jpg" /></swiper-slide
-    ><swiper-slide
-      ><img
-        src="https://www.yogyagroup.com/storage/banner/65405fe3f0c09_1698717667.jpg" /></swiper-slide
-    ><swiper-slide
-      ><img src="https://www.yogyagroup.com/storage/banner/5fbf1fe697265_1606361062.jpg"
-    /></swiper-slide>
+    <swiper-slide v-for="(banner, index) in bannerStore.banners" :key="index"
+      ><a v-bind:href="banner.link">
+        <img v-bind:src="banner.image" />
+      </a> 
+    </swiper-slide>
     </swiper>
   </div>
     
   </template>
-  <script>
-    // Import Swiper Vue.js components
-    import { Swiper, SwiperSlide } from 'swiper/vue';
+  <script setup>
+  import { useBanner } from "@/store/banner" 
+  import { ref, onMounted } from 'vue';
+  import { Swiper, SwiperSlide } from 'swiper/vue';
+  import 'swiper/css';
+  import 'swiper/css/pagination';
+  import 'swiper/css/navigation';
+  import { Autoplay, Pagination, Navigation } from 'swiper/modules';
   
-    // Import Swiper styles
-    import 'swiper/css';
+  // Declare a ref for modules
+  const modules = ref([Autoplay, Pagination, Navigation]);
+
+  const bannerStore = useBanner()
   
-    import 'swiper/css/pagination';
-    import 'swiper/css/navigation';
-  
-    // import required modules
-    import {  Autoplay, Pagination, Navigation } from 'swiper/modules';
-  
-    export default {
-      components: {
-        Swiper,
-        SwiperSlide,
-      },
-      setup() {
-        return {
-          modules: [Autoplay, Pagination, Navigation],
-        };
-      },
-    };
+  // Hook to execute logic after the component is mounted
+  onMounted(() => {
+    bannerStore.fetchDataBanner();
+  });
   </script>
   <style>
 .banner {
