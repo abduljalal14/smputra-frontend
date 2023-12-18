@@ -2,6 +2,7 @@
     import { useProducts } from "@/store/products"
     import { useCategory } from '@/store/categories';
     import { useRouter } from 'vue-router';
+    import { onMounted } from 'vue';
 
     //init router
     const router = useRouter();
@@ -14,6 +15,9 @@
         //assign file to state
         productStore.product.image = e.target.files[0];
     };
+    onMounted(() => {
+        categoryStore.fetchDataCategory();
+    });
 </script>
 
 <template>

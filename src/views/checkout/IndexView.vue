@@ -180,7 +180,7 @@ const contactStore = useContact()
 const makeOrder = () => {
   orderStore.storeOrder(router, cartStore.cartItems)
   orderStore.fetchDataOrder(orderStore.orderId)
-  contactStore.openWhatsApp(orderStore.customerName,orderStore.customerPhone,orderStore.customerAddres,orderStore.storeLocation,orderStore.orderMethod,cartStore.cartItems,orderStore.total,orderStore.orderId)
+  contactStore.openWhatsApp(orderStore.customerName,orderStore.customerPhone,orderStore.customerAddres,orderStore.storeLocation,orderStore.orderMethod,cartStore.cartItems,orderStore.total,orderStore.orderId,productStore.products)
   cartStore.reset()
   orderStore.reset()
 };

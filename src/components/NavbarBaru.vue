@@ -50,7 +50,7 @@
               <router-link :to="{ name: 'about' }" class="nav-link nav-link-custom text-uppercase" :class="{ 'active': route.name === 'about' }">About</router-link>
             </li>
             <li class="nav-item megamenu">
-              <router-link :to="{ name: 'blog' }" class="nav-link nav-link-custom text-uppercase" :class="{ 'active': route.name === 'blog' }">Blog</router-link>
+              <router-link :to="{ name: 'blog' }" class="nav-link nav-link-custom text-uppercase disabled" :class="{ 'active': route.name === 'blog' }">Blog</router-link>
             </li>
           </ul>
           <ul class="navbar-nav ml-auto m-2">
@@ -113,19 +113,21 @@
   
 <script setup>
 import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useCart } from '@/store/cart'
 import { useProducts } from "@/store/products";
 import { useCategory } from "@/store/categories";
 
 const productStore = useProducts();
 const categoryStore = useCategory();
-
+const router = useRouter()
 
 
 const cartStore = useCart()
 
 
 function handleSearch() {
+  router.push({ path: "/shop" });
   search();
   triggerButtonClick(); // Tambahkan pemanggilan untuk menutup modal
 }
@@ -146,6 +148,7 @@ const triggerButtonClick = () => {
 
 
 const route = useRoute()
+
 </script>
 <style>
 

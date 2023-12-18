@@ -4,6 +4,13 @@
  <div class="alert alert-danger p-2" role="alert">
    Keranjangmu masih kosong, tambah produk untuk isi keranjangmu
 </div >
+<div class="mt-3 mt-lg-0">
+         <div class="d-flex justify-content-between mt-4">
+                  <button data-bs-dismiss="offcanvas" class="btn btn-primary">
+                     <router-link :to="{ name: 'shop' }" class="btn btn-primary">Belanja Sekarang</router-link>
+                  </button>
+         </div>
+		</div>
 </div >
 <div v-else>
                <ul class="list-group list-group-flush">
