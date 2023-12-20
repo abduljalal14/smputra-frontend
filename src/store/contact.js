@@ -10,7 +10,7 @@ export const useContact = defineStore({
   }),
   actions: {
     // (orderStore.customerName,orderStore.customerPhone,orderStore.customerAddres,orderStore.storeLocation,orderStore.orderMethod,cartStore.cartItems,orderStore.total)
-    openWhatsApp(name,phone,address,store,method,items,total,orderId,products){
+    openWhatsApp(name,phone,address,store,method,items,total,orderId,item){
         let noWA = ''
         let ongkir = ''
         if (store=='Sari Mulya Pasarbatang') {
@@ -22,14 +22,15 @@ export const useContact = defineStore({
         if (method=='COD') {
             ongkir = 'Biaya Ongkir : Rp. 3000'
         }
-
+ 
         let listItem = ``;
-        for (const item in items) { 
-                listItem += `- ${products.find(product => product.id === item.product_id).name }  ${items[item].qty}x@${products.find(product => product.id === item.product_id).price} : Rp. ${item.qty*products.find(product => product.id === item.product_id).price}\n`;
-        }
+        listItem = item;
+        // for (const item in items) { 
+        //   listItem += `${item.qty} dan ${this.products[1].name}`
+             //  listItem += `- ${this.products.find(product => product.id === item.product_id).name }  ${items[item].qty}x@${this.products.find(product => product.id === item.product_id).price} : Rp. ${item.qty*this.products.find(product => product.id === item.product_id).price}\n`;
+        // }
 
         console.log('Isi dari Items', items);
-        console.log('Isi dari listItem', listItem);
 
 this.message = `Hai Admin Toko *${store}*, saya ingin membeli produk berikut ini:
 

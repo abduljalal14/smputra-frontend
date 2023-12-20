@@ -30,13 +30,9 @@ export const useOrder = defineStore({
       }
     },
     async fetchDataOrder(order_id) {
-      console.log('test 2 passed')
       try {
-        console.log('test 3 passed')
       const response = await api.get(`/api/orders/${order_id}`);
-      console.log('test 4 passed')
       this.order.orderId = response.data.data.order_id
-      console.log('test 5 passed')
       this.order.name = response.data.data.customer_name
       this.order.phone = response.data.data.customer_phone
       this.order.address = response.data.data.customer_address
@@ -44,7 +40,6 @@ export const useOrder = defineStore({
       this.order.method = response.data.data.shipping_method
       this.order.date = response.data.data.created_at
       this.order.items = response.data.data.order_details
-      console.log('isi dari order name: ', this.order.name)
       this.error = false;
     } catch (err) {
       this.error = true;
@@ -71,6 +66,7 @@ export const useOrder = defineStore({
           this.order.items = orderData.order_details || [];
           console.log('test 5 passed');
           console.log('isi dari order name: ', this.order.name);
+          console.log('isi dari order item product: ', this.order.items[1]);
           this.error = false;
           this.errorMessage = ""
         } 

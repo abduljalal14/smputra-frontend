@@ -167,23 +167,29 @@
 import { useCart } from '@/store/cart'
 import { useOrder } from '@/store/order'
 import { useProducts } from '@/store/products';
-import { watchEffect } from 'vue';
+import { watchEffect,ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useContact } from '@/store/contact'
+const productStore = useProducts()
+const cartStore = useCart()
 
 const router = useRouter()
-const cartStore = useCart()
 const orderStore = useOrder()
-const productStore = useProducts()
+
 const contactStore = useContact()
+const listItem = ref(``);
 
 const makeOrder = () => {
-  orderStore.storeOrder(router, cartStore.cartItems)
-  orderStore.fetchDataOrder(orderStore.orderId)
-  contactStore.openWhatsApp(orderStore.customerName,orderStore.customerPhone,orderStore.customerAddres,orderStore.storeLocation,orderStore.orderMethod,cartStore.cartItems,orderStore.total,orderStore.orderId,productStore.products)
+   orderStore.storeOrder(router, cartStore.cartItems)
+   orderStore.fetchDataOrder(orderStore.orderId)
+       cartStore.cartItems.forEach(cartItem => {
+       listItem.value += `- ${productStore.products.find(product => product.id === cartItem.product_id).name} ${cartItem.qty}x@${productStore.products.find(product => product.id === cartItem.product_id).price} : Rp. ${cartItem.qty*productStore.products.find(product => product.id === cartItem.product_id).price}\n`;
+       });   
+  contactStore.openWhatsApp(orderStore.customerName,orderStore.customerPhone,orderStore.customerAddres,orderStore.storeLocation,orderStore.orderMethod,cartStore.cartItems,orderStore.total,orderStore.orderId,listItem.value)
   cartStore.reset()
   orderStore.reset()
 };
+  
 
 watchEffect(() => {
   // Hitung subtotal setiap kali cartItems berubah
@@ -196,6 +202,8 @@ watchEffect(() => {
       return total;
    }, 0);
 });
+
+
 
 </script>
 
