@@ -36,7 +36,7 @@ this.message = `Hai Admin Toko *${store}*, saya ingin membeli produk berikut ini
 
 ${listItem}
 ${ongkir}
-______________________________
+_________________ _____________
 *Total: Rp. ${total}*
 
 Berikut adalah alamat saya:
