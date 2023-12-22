@@ -20,61 +20,93 @@ export const useAuth = defineStore({
         this.error = 'Error fetching user data.';
       }
     },
-    login(router) {
-        if (this.user.email && this.user.password) {
-            api.get('/sanctum/csrf-cookie')
-                .then(response => {
-
-                    //debug cookie
-                    console.log(response)
-
-                    api.post('/api/login', {
-                        email: this.user.email,
-                        password: this.user.password
-                    }).then(res => {
-
-                        //debug user login
-                        console.log(res)
-
-                        if (res.data.success) {
-
-                            //set localStorage
-                            localStorage.setItem("loggedIn", "true")
-
-                            //set localStorage Token
-                            localStorage.setItem("token", res.data.token)
-
-                            //change state
-                            this.loggedIn = true
-
-                            //redirect dashboard
-                            return router.push({ name: 'dashboard' });
-
-                        } else {
-
-                            //set state login failed
-                            this.loginFailed = true
-
-                        }
-
-                    }).catch(error => {
-                        console.log(error)
-                    })
-
-                })
+    async login(router) {
+      try {
+        await api.get('/sanctum/csrf-cookie');
+        const response = await api.post('/api/login', {
+          email: this.user.email,
+          password: this.user.password,
+        });
+    
+        if (response.data.success) {
+          localStorage.setItem('loggedIn', 'true');
+          localStorage.setItem('token', response.data.token);
+          this.loggedIn = true;
+          return router.push({ name: 'dashboard' });
+        } else {
+          this.loginFailed = true;
         }
-
-        this.validation = []
-
-        if (!this.user.email) {
-            this.validation.email = true
-        }
-
-        if (!this.user.password) {
-            this.validation.password = true
-        }
-
+      } catch (error) {
+        console.error('Error during login:', error);
+      }
+    
+      // Clear previous validation messages
+      this.validation = {};
+    
+      if (!this.user.email) {
+        this.validation.email = true;
+      }
+    
+      if (!this.user.password) {
+        this.validation.password = true;
+      }
     },
+    
+    // login(router) {
+    //     if (this.user.email && this.user.password) {
+    //         api.get('/sanctum/csrf-cookie')
+    //             .then(response => {
+
+    //                 //debug cookie
+    //                 console.log(response)
+
+    //                 api.post('/api/login', {
+    //                     email: this.user.email,
+    //                     password: this.user.password
+    //                 }).then(res => {
+
+    //                     //debug user login
+    //                     console.log(res)
+
+    //                     if (res.data.success) {
+
+    //                         //set localStorage
+    //                         localStorage.setItem("loggedIn", "true")
+
+    //                         //set localStorage Token
+    //                         localStorage.setItem("token", res.data.token)
+
+    //                         //change state
+    //                         this.loggedIn = true
+
+    //                         //redirect dashboard
+    //                         return router.push({ name: 'dashboard' });
+
+    //                     } else {
+
+    //                         //set state login failed
+    //                         this.loginFailed = true
+
+    //                     }
+
+    //                 }).catch(error => {
+    //                     console.log(error)
+    //                 })
+
+    //             })
+    //     }
+
+    //     this.validation = []
+
+    //     if (!this.user.email) {
+    //         this.validation.email = true
+    //     }
+
+    //     if (!this.user.password) {
+    //         this.validation.password = true
+    //     }
+
+    // },
     logout(router) {
         api.get('/api/logout')
           .then(() => {
