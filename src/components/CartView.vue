@@ -20,16 +20,16 @@
                      <div class="row align-items-center">
                         <div class="col-5 col-md-5 col-lg-6">
                            <div class="d-flex">
-                              <img v-bind:src="productStore.products.find(product => product.id === cartItem.product_id).image" alt="Ecommerce" class="icon-shape icon-xxl">
+                              <img v-bind:src="cartItem.product.image" alt="Ecommerce" class="icon-shape icon-xxl"> 
                               <div class="ms-3">
                                  <!-- title -->
                                  <a href="./pages/shop-single.html" class="text-inherit">
-                                    <h6 class="mb-0">{{ productStore.products.find(product => product.id === cartItem.product_id).name }}</h6>
+                                    <h6 class="mb-0">{{ cartItem.product.name }}</h6>
                                  </a>
-                                 <span><small class="text-muted">Rp {{ productStore.products.find(product => product.id === cartItem.product_id).price }}</small></span>
+                                 <span><small class="text-muted">{{ formatPrice(cartItem.product.price) }}</small></span>
                                  <!-- text -->
                                  <div class="mt-2 small lh-1">
-                                    <a href="#!" class="text-decoration-none text-inherit text-danger"  @click="cartStore.deleteCartItem(cartItem.product_id)">
+                                    <a href="#!" class="text-decoration-none text-inherit text-danger"  @click="cartStore.deleteCartItem(cartItem.product)">
                                        <span class="me-1 align-text-bottom">
                                           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 text-success">
                                              <polyline points="3 6 5 6 21 6"></polyline>
@@ -56,11 +56,15 @@
                         </div>
                         <!-- price -->
                         <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                           <span class="fw-bold">Rp {{ productStore.products.find(product => product.id === cartItem.product_id).price * cartItem.qty }}</span>
+                           <span class="fw-bold"> {{ formatPrice(cartItem.subtotal) }}</span>
                         </div>
                      </div>
                   </li>
                </ul>
+
+               <div class="text-start mt-4">
+                        <h3 class="fw-bold">Total {{ formatPrice(cartStore.calculateTotalSubtotal) }}</h3>
+                     </div>
                <!-- btn -->
                <div class="d-flex justify-content-between mt-4">
                   <button data-bs-dismiss="offcanvas" class="btn btn-primary">
@@ -71,10 +75,15 @@
 </template>
 <script setup>
 import { useCart } from '@/store/cart'
-import { useProducts } from '@/store/products'
+import { formatPrice } from "@/utils/currency";
 
-const productStore = useProducts()
 const cartStore = useCart()
+
+
+
+
+
+
 
 </script>
 <style lang="">

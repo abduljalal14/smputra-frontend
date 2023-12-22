@@ -25,10 +25,6 @@ export const useContact = defineStore({
  
         let listItem = ``;
         listItem = item;
-        // for (const item in items) { 
-        //   listItem += `${item.qty} dan ${this.products[1].name}`
-             //  listItem += `- ${this.products.find(product => product.id === item.product_id).name }  ${items[item].qty}x@${this.products.find(product => product.id === item.product_id).price} : Rp. ${item.qty*this.products.find(product => product.id === item.product_id).price}\n`;
-        // }
 
         console.log('Isi dari Items', items);
 

@@ -14,7 +14,6 @@ export const useOrder = defineStore({
     ongkir: 3000,
     orderMethod: 'COD',
     subtotal: 0,
-    total: 0,
     formData: new FormData(),
     error: true,
     errorMessage: ""
@@ -48,9 +47,9 @@ export const useOrder = defineStore({
     },
     async fetchDataOrderById(order_id) {
       try {
-        console.log('test 3 passed');
+        console.log('test 1 fetch oreder passed');
         const response = await api.get(`/api/order/id/${order_id}`);
-        console.log('test 4 passed');
+        console.log('test 2 fetch oreder passed');
       
         const orderData = response.data.order;
       
@@ -85,6 +84,14 @@ export const useOrder = defineStore({
     
     async storeOrder (router, orderItem){
       // mebuat order_id
+      const details = orderItem.map(item => ({
+        product_id: item.product.id,
+        qty: item.qty
+      }));
+
+      console.log("TEST 1 PASSED")
+      console.log("Order Item : ", orderItem)
+      console.log("detail Item : ", details)
       const currentDate = new Date();
       const day = currentDate.getDate().toString().padStart(2, '0');
       const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
@@ -100,8 +107,9 @@ export const useOrder = defineStore({
         "customer_address": this.customerAddres,
         "store_location": this.storeLocation,
         "shipping_method": this.orderMethod,
-        "details": orderItem
+        "details": details
       }
+      console.log("TESTTT")
       const response = await api.post('/api/orders', this.formData)
       try{
           this.formData = new FormData()
