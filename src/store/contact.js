@@ -43,7 +43,7 @@ Alamat: ${address}
 Metode pengirimian: *${method}*
 
 ID Pemesanan: *${orderId}*
-Lihat detail pesanan saya: http://localhost:8080/order-details`
+Lihat detail pesanan saya: https://sarimulya.netlify.app/order-details`
 
 
         console.log('Isi dari message', this.message);
