@@ -53,7 +53,7 @@
                      <div class="d-lg-flex justify-content-between align-items-center">
                         <div class="mb-3 mb-lg-0">
                            <p class="mb-0">
-                              <span class="text-dark">{{ productStore.products.length }}</span>
+                              <span v-if="productStore.query!=''" class="text-dark">Cari : {{ productStore.query }}. </span><span class="text-dark"> {{ productStore.products.length }}</span>
                               Produk ditemukan
                            </p>
                         </div>
@@ -133,12 +133,15 @@ const productStore = useProducts();
 const categoryStore = useCategory();
 
 function search() {
+  productStore.fetchDataProducts(productStore.currentPage, productStore.query, categoryStore.selectedCategory);
+}
+function search2() {
    productStore.query = ''
   productStore.fetchDataProducts(productStore.currentPage, productStore.query, categoryStore.selectedCategory);
 }
 
 watch(() => categoryStore.selectedCategory, () => {
-  search(); // Mencari produk setiap kali kategori berubah
+  search2(); // Mencari produk setiap kali kategori berubah
 });
 
 

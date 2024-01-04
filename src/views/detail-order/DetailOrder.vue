@@ -62,17 +62,17 @@
                         <li v-for="(item, index) in orderStore.order.items" :key="index" class="list-group-item px-4 py-3">
                            <div class="row align-items-center">
                               <div class="col-2 col-md-2">
-                                 <img v-bind:src="productStore.products.find(product => product.id === item.product_id).image" alt="Ecommerce" class="img-fluid">
+                                 <img v-bind:src="item.product.image" alt="Ecommerce" class="img-fluid">
                               </div>
                               <div class="col-5 col-md-5">
-                                 <h6 class="mb-0">{{ productStore.products.find(product => product.id === item.product_id).name }}</h6>
-                                 <span><small class="text-muted">{{ productStore.products.find(product => product.id === item.product_id).category.name }}</small></span>
+                                 <h6 class="mb-0">{{ item.product.name }}</h6>
+                                 <!-- <span><small class="text-muted">{{ item.product.category.name }}</small></span> -->
                               </div>
                               <div class="col-2 col-md-2 text-center text-muted">
                                  <span>{{  item.qty }}</span>
                               </div>
                               <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                 <span class="fw-bold">Rp {{ productStore.products.find(product => product.id === item.product_id).price * item.qty }}</span>
+                                 <span class="fw-bold">{{ formatPrice(item.product.price * item.qty) }}</span>
                               </div>
                            </div>
                         </li>
@@ -86,14 +86,14 @@
                               <div class="me-auto">
                                  <div>Item Subtotal</div>
                               </div>
-                              <span>Rp {{ subTotal }}</span>
+                              <span>{{ formatPrice(subTotal) }}</span>
                            </li>
                            <!-- list group item -->
                            <li v-if="orderStore.order.method == 'COD'" class="list-group-item d-flex justify-content-between align-items-start">
                               <div class="me-auto">
                                  <div>Biaya Ongkir</div>
                               </div>
-                              <span>Rp. {{ orderStore.ongkir }}</span>
+                              <span>{{ formatPrice(orderStore.ongkir) }}</span>
                            </li>
                            <!-- list group item -->
                            <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -101,8 +101,8 @@
                                  <div class="fw-bold">Total</div>
                               </div>
                               
-                              <span v-if="orderStore.order.method == 'COD'" class="fw-bold">Rp. {{ subTotal+orderStore.ongkir }}</span>
-                              <span v-else class="fw-bold">Rp. {{ subTotal }}</span>
+                              <span v-if="orderStore.order.method == 'COD'" class="fw-bold">{{ formatPrice(subTotal+orderStore.ongkir) }}</span>
+                              <span v-else class="fw-bold">{{ formatPrice(subTotal) }}</span>
                            </li>
                         </ul>
                      </div>
@@ -121,9 +121,10 @@
 </section>
 </template>
 <script setup>
+import { formatPrice } from "@/utils/currency";
 import { useOrder } from '@/store/order'
 import { useProducts } from '@/store/products';
-import { onMounted, ref,watchEffect } from 'vue'
+import {  ref,watchEffect } from 'vue'
 import jsPDF from 'jspdf';
 import '@/assets/js/consolas-normal';
 
@@ -140,7 +141,7 @@ watchEffect(() => {
 
       if (orderStore.order && orderStore.order.items && productStore.products) {
          orderStore.order.items.forEach(item => {
-            const product = productStore.products.find(product => product.id === item.product_id);
+            const product = item.product;
             if (product) {
                subTotal.value += product.price * item.qty;
             }
@@ -162,12 +163,6 @@ const searchOrderById = () => {
    console.log('test 1 passed')
    orderStore.fetchDataOrderById(orderId.value);
 }
-
-const formatCurrency = (number) => {
-   const formattedNumber = number.toLocaleString('id-ID');
-   return formattedNumber;
-}
-
 
 const generatePdf = () => {
        // Variabel
@@ -197,13 +192,13 @@ const generatePdf = () => {
       // items
       let yOffset = 52; // start posisi y
       orderStore.order.items.forEach(item => {
-        const product_name = productStore.products.find(product => product.id === item.product_id).name;
-        const product_price = productStore.products.find(product => product.id === item.product_id).price;
+        const product_name = item.product.name;
+        const product_price = item.product.price;
 
         pdf.text(product_name, 7, yOffset);
         yOffset += 3; // jarak ke baris berikutnya
-        pdf.text(`${item.qty}  x  ${formatCurrency(product_price)}     =`, 45, yOffset, { align: 'right' });
-        pdf.text(formatCurrency(item.qty*product_price).toString(), 65, yOffset, { align: 'right' });
+        pdf.text(`${item.qty}  x  ${formatPrice(product_price)}     =`, 45, yOffset, { align: 'right' });
+        pdf.text(formatPrice(item.qty*product_price).toString(), 65, yOffset, { align: 'right' });
         yOffset += 3;
       });
 
@@ -211,14 +206,14 @@ const generatePdf = () => {
       pdf.text('----------------------------------------', 6, yOffset);
       yOffset += 3;
       pdf.text('SUBTOTAL   :', 39, yOffset, { align: 'right' });
-      pdf.text(formatCurrency(subTotal.value).toString(), 65, yOffset, { align: 'right' });
+      pdf.text(formatPrice(subTotal.value).toString(), 65, yOffset, { align: 'right' });
       yOffset += 3;
       pdf.text('ONGKOS KIRIM   :', 39, yOffset, { align: 'right' });
-      pdf.text(formatCurrency(orderStore.ongkir).toString(), 65, yOffset, { align: 'right' });
+      pdf.text(formatPrice(orderStore.ongkir).toString(), 65, yOffset, { align: 'right' });
       yOffset += 4;
       pdf.setFontSize(12);
       pdf.text('TOTAL  :', 39.5, yOffset, { align: 'right' });
-      pdf.text(formatCurrency(subTotal.value+orderStore.ongkir).toString(), 65, yOffset, { align: 'right' });
+      pdf.text(formatPrice(subTotal.value+orderStore.ongkir).toString(), 65, yOffset, { align: 'right' });
 
       // footer
       pdf.setFontSize(8);
@@ -245,9 +240,7 @@ const generatePdf = () => {
 //       getSubtotal();
 //     });
 
-onMounted(() => {
-   productStore.fetchDataProducts();
-});
+
 
 </script>
 

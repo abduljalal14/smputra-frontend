@@ -13,14 +13,13 @@
 			<div class="ms-lg-4">
 				<h1 class="fs-2 mb-1">Selamat Datang di Sari Mulya Putra</h1>
 				<span>
-					Download aplikasi Sari Mulya Putra, dapatkan potongan harga
-					<span class="text-primary">Rp 25.000</span>
+					Belanja online di Sari Mulya Putra jadi lebih praktis
 				</span>
 			</div>
 		</div>
 		<div class="mt-3 mt-lg-0">
 			<!-- btn -->
-			<a href="#" class="btn btn-dark">Download  Aplikasi Sari Mulya Putra</a>
+			<router-link :to="{ name: 'shop' }" class="btn btn-dark">Belanja Sekarang</router-link>
 		</div>
 	</div>
 </div>

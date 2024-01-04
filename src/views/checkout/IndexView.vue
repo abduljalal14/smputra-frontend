@@ -65,18 +65,18 @@
                                  <!-- list group item -->
                                  <li v-for="(cartItem, index) in cartStore.cartItems" :key="index" class="list-group-item px-4 py-3">
                                     <div class="row align-items-center">
-                                       <div class="col-2 col-md-2">
-                                          <img v-bind:src="productStore.products.find(product => product.id === cartItem.product_id).image" alt="Ecommerce" class="img-fluid">
+                                       <div class="col-2 col-md-2"> 
+                                          <img v-bind:src="cartItem.product.image" alt="Ecommerce" class="img-fluid">
                                        </div>
                                        <div class="col-5 col-md-5">
-                                          <h6 class="mb-0">{{ productStore.products.find(product => product.id === cartItem.product_id).name }}</h6>
-                                          <span><small class="text-muted">{{ productStore.products.find(product => product.id === cartItem.product_id).category.name }}</small></span>
+                                          <h6 class="mb-0">{{ cartItem.product.name }}</h6>
+                                          <span><small class="text-muted">{{ cartItem.product.category.name }}</small></span>
                                        </div>
                                        <div class="col-2 col-md-2 text-center text-muted">
                                           <span>{{  cartItem.qty }}</span>
                                        </div>
                                        <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                          <span class="fw-bold">Rp {{ productStore.products.find(product => product.id === cartItem.product_id).price * cartItem.qty }}</span>
+                                          <span class="fw-bold">{{ formatPrice(cartItem.subtotal) }}</span>
                                        </div>
                                     </div>
                                  </li>
@@ -91,7 +91,7 @@
            <div class="me-auto">
               <div>Item Subtotal</div>
            </div>
-           <span>Rp {{ orderStore.subtotal }}</span>
+           <span>{{ formatPrice(cartStore.calculateTotalSubtotal) }}</span>
         </li>
         <!-- list group item -->
    <li v-if="orderStore.orderMethod == 'COD'" class="list-group-item d-flex justify-content-between align-items-start">
@@ -105,8 +105,8 @@
       <div class="me-auto">
          <div class="fw-bold">Total</div>
       </div>
-      <span v-if="orderStore.orderMethod != 'COD'" class="fw-bold">Rp. {{ orderStore.subtotal }}</span>
-      <span v-else class="fw-bold">Rp. {{ orderStore.getTotal }}</span>
+      <span v-if="orderStore.orderMethod != 'COD'" class="fw-bold">{{ formatPrice(cartStore.calculateTotalSubtotal) }}</span>
+      <span v-else class="fw-bold">{{ formatPrice(cartStore.calculateTotalSubtotal+orderStore.ongkir) }}</span>
    </li>
     </ul>
  </div>
@@ -115,7 +115,8 @@
 <div v-if="orderStore.invalid || cartStore.cartItems.length === 0" class="alert alert-danger" role="alert">Lengkapi Data untuk melakukan Checkout</div>
    <button v-else class="btn btn-primary btn-lg d-flex justify-content-between align-items-center" type="submit" data-bs-toggle="modal" data-bs-target="#detailOrderModal">
     Go to Checkout 
-    <span class="fw-bold">Rp. {{ orderStore.getTotal }}</span>
+    <span v-if="orderStore.orderMethod == 'COD'" class="fw-bold">{{ formatPrice(cartStore.calculateTotalSubtotal+orderStore.ongkir) }}</span>
+    <span v-else class="fw-bold">{{ formatPrice(cartStore.calculateTotalSubtotal) }}</span>
    </button>
  </div>
                               
@@ -147,10 +148,11 @@
             <li class="list-group-item">Toko    : {{ orderStore.storeLocation }}</li>
             <li class="list-group-item">Metode  : {{ orderStore.orderMethod }}</li>
             <li class="list-group-item active">Daftar Belanjaan</li>
-            <li v-for="(cartItem, index) in cartStore.cartItems" :key="index" class="list-group-item">{{ productStore.products.find(product => product.id === cartItem.product_id).name }} {{ cartItem.qty }}x@{{ productStore.products.find(product => product.id === cartItem.product_id).price }} : {{ productStore.products.find(product => product.id === cartItem.product_id).price* cartItem.qty }}</li>
+            <li v-for="(cartItem, index) in cartStore.cartItems" :key="index" class="list-group-item">{{ cartItem.product.name }} {{ cartItem.qty }}x@{{ cartItem.product.price }} : {{ cartItem.product.price* cartItem.qty }}</li>
             
             <li v-if="orderStore.orderMethod == 'COD'" class="list-group-item">Ongkos Kirim  : {{ orderStore.ongkir }}</li>
-            <li class="list-group-item active"><h4 class="ml-auto" >Total  : Rp {{ orderStore.total }}</h4></li>
+            <li v-if="orderStore.orderMethod == 'COD'" class="list-group-item active"><h4 class="ml-auto" >Total  : {{ formatPrice(cartStore.calculateTotalSubtotal+orderStore.ongkir) }}</h4></li>
+            <li v-else class="list-group-item active"><h4 class="ml-auto" >Total  : {{ formatPrice(cartStore.calculateTotalSubtotal) }}</h4></li>
          </ul> 
         </pre>
       </div>
@@ -165,37 +167,43 @@
 </template>
 <script setup>
 import { useCart } from '@/store/cart'
+import { formatPrice } from "@/utils/currency";
 import { useOrder } from '@/store/order'
-import { useProducts } from '@/store/products';
-import { watchEffect } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useContact } from '@/store/contact'
 
-const router = useRouter()
 const cartStore = useCart()
+
+const router = useRouter()
 const orderStore = useOrder()
-const productStore = useProducts()
+
 const contactStore = useContact()
 
+
 const makeOrder = () => {
-  orderStore.storeOrder(router, cartStore.cartItems)
-  orderStore.fetchDataOrder(orderStore.orderId)
-  contactStore.openWhatsApp(orderStore.customerName,orderStore.customerPhone,orderStore.customerAddres,orderStore.storeLocation,orderStore.orderMethod,cartStore.cartItems,orderStore.total,orderStore.orderId)
+   const listItem = ref(``);
+   const grandTotal = ref();
+
+   if (orderStore.orderMethod == 'COD') {
+      grandTotal.value = cartStore.calculateTotalSubtotal+orderStore.ongkir
+   } else {
+      grandTotal.value = cartStore.calculateTotalSubtotal
+   }
+   orderStore.storeOrder(router, cartStore.cartItems)
+   orderStore.fetchDataOrderById(orderStore.orderId)
+       cartStore.cartItems.forEach(cartItem => {
+       listItem.value += `- ${cartItem.product.name} ${cartItem.qty}x@${cartItem.product.price} : Rp. ${cartItem.qty*cartItem.product.price}\n`;
+       });   
+  contactStore.openWhatsApp(orderStore.customerName,orderStore.customerPhone,orderStore.customerAddres,orderStore.storeLocation,orderStore.orderMethod,cartStore.cartItems,grandTotal.value,orderStore.orderId,listItem.value)
   cartStore.reset()
   orderStore.reset()
 };
+  
 
-watchEffect(() => {
-  // Hitung subtotal setiap kali cartItems berubah
-   orderStore.subtotal = Object.values(cartStore.cartItems).reduce((total, cartItem) => {
-      const product = productStore.products.find(product => product.id === cartItem.product_id);
-      if (product) {
-         const itemTotal = product.price * cartItem.qty;
-         total += itemTotal;
-      }
-      return total;
-   }, 0);
-});
+
+
+
 
 </script>
 
