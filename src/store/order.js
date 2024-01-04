@@ -82,6 +82,43 @@ export const useOrder = defineStore({
       }
     },
     
+    async fetchDataOrderByIdAndOrderId(order_id, id) {
+      try {
+        console.log('test 1 fetch oreder passed');
+        const response = await api.get(`/api/order/id/${order_id}/${id}`);
+        console.log('test 2 fetch oreder passed');
+      
+        const orderData = response.data.order;
+      
+        // Pastikan orderData tidak null atau undefined sebelum mengakses propertinya
+        if (orderData) {
+          this.order.name = orderData.customer_name || '';
+          this.order.phone = orderData.customer_phone || '';
+          this.order.orderId = orderData.order_id || '';
+          this.order.address = orderData.customer_address || '';
+          this.order.store = orderData.store_location || '';
+          this.order.method = orderData.shipping_method || '';
+          this.order.date = orderData.created_at || '';
+          this.order.items = orderData.order_details || [];
+          console.log('test 5 passed');
+          console.log('isi dari order name: ', this.order.name);
+          console.log('isi dari order item product: ', this.order.items[1]);
+          this.error = false;
+          this.errorMessage = ""
+        } 
+      } catch (err) {
+        this.error = true;
+        // Cek apakah ada pesan kesalahan dalam response.data.error
+        if (err.response && err.response.data && err.response.data.error) {
+          this.errorMessage = err.response.data.error;
+        } else {
+          this.errorMessage = 'Terjadi kesalahan saat mengambil data order.';
+        }
+        console.error(this.errorMessage);
+        console.error(err);
+      }
+    },
+    
     async storeOrder (router, orderItem){
       // mebuat order_id
       const details = orderItem.map(item => ({

@@ -32,7 +32,7 @@
                   <!-- Nama -->
                   <div class="mb-3">
                         <input v-model="orderId" type="text" id="name-input" class="form-control" placeholder="ID Pesanan">
-                        <button @click="searchOrderById()" type="submit" class="btn btn-primary">Cari</button>
+                        <button @click="searchOrderByIdandOrderId()" type="submit" class="btn btn-primary">Cari</button>
                   </div>
                   
                </div>
@@ -60,7 +60,7 @@
                      <ul class="list-group list-group-flush">
                         <!-- list group item -->
                         <li v-for="(item, index) in orderStore.order.items" :key="index" class="list-group-item px-4 py-3">
-                           <div class="row align-items-center">
+                           <div class="row align-items-center"> 
                               <div class="col-2 col-md-2">
                                  <img v-bind:src="item.product.image" alt="Ecommerce" class="img-fluid">
                               </div>
@@ -159,9 +159,18 @@ watchEffect(() => {
 //    orderStore.fetchDataOrder(orderId.value);
 // }
 
-const searchOrderById = () => {
+// const searchOrderById = () => {
+//    console.log('test 1 passed')
+//    orderStore.fetchDataOrderById(orderId.value);
+// }
+
+const searchOrderByIdandOrderId = () => {
    console.log('test 1 passed')
-   orderStore.fetchDataOrderById(orderId.value);
+   const order_id = orderId.value.substring(0, 10);
+   const id = orderId.value.substring(10);
+   console.log('order_id :', order_id)
+   console.log('id :', id)
+   orderStore.fetchDataOrderByIdAndOrderId(order_id, id);
 }
 
 const generatePdf = () => {

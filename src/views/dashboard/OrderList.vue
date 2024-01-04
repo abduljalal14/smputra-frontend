@@ -52,20 +52,21 @@
                   <h5 class="px-6 py-4 bg-transparent mb-0 text-primary" >Rincian Item</h5>
                      <ul class="list-group list-group-flush">
                         <!-- list group item -->
-                        <li v-for="(item, index) in orderStore.order.order_details" :key="index" class="list-group-item px-4 py-3">
-                           <div class="row align-items-center">
+                         <!-- list group item -->
+                         <li v-for="(item, index) in orderStore.order.order_details" :key="index" class="list-group-item px-4 py-3">
+                           <div class="row align-items-center"> 
                               <div class="col-2 col-md-2">
-                                 <img v-bind:src="productStore.products.find(product => product.id === item.product_id).image" alt="Ecommerce" class="img-fluid">
+                                 <img v-bind:src="item.product.image" alt="Ecommerce" class="img-fluid">
                               </div>
                               <div class="col-5 col-md-5">
-                                 <h6 class="mb-0">{{ productStore.products.find(product => product.id === item.product_id).name }}</h6>
-                                 <span><small class="text-muted">{{ productStore.products.find(product => product.id === item.product_id).category.name }}</small></span>
+                                 <h6 class="mb-0">{{ item.product.name }}</h6>
+                                 <!-- <span><small class="text-muted">{{ item.product.category.name }}</small></span> -->
                               </div>
                               <div class="col-2 col-md-2 text-center text-muted">
                                  <span>{{  item.qty }}</span>
                               </div>
                               <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                 <span class="fw-bold">Rp {{ productStore.products.find(product => product.id === item.product_id).price * item.qty }}</span>
+                                 <span class="fw-bold">{{ formatPrice(item.product.price * item.qty) }}</span>
                               </div>
                            </div>
                         </li>
@@ -79,22 +80,22 @@
                               <div class="me-auto">
                                  <div>Item Subtotal</div>
                               </div>
-                              <span>Rp {{ subTotal }}</span>
+                              <span>{{ formatPrice(subTotal) }}</span>
                            </li>
                            <!-- list group item -->
                            <li v-if="orderStore.order.shipping_method == 'COD'" class="list-group-item d-flex justify-content-between align-items-start">
                               <div class="me-auto">
                                  <div>Biaya Ongkir</div>
                               </div>
-                              <span>Rp. {{ orderStore.ongkir }}</span>
+                              <span>{{ formatPrice(orderStore.ongkir) }}</span>
                            </li>
                            <!-- list group item -->
                            <li class="list-group-item d-flex justify-content-between align-items-start">
                               <div class="me-auto">
                                  <div class="fw-bold">Total</div>
                               </div>
-                              <span v-if="orderStore.order.shipping_method != 'COD'" class="fw-bold">Rp. {{ subTotal }}</span>
-                              <span v-else class="fw-bold">Rp. {{ subTotal+orderStore.ongkir }}</span>
+                              <span v-if="orderStore.order.shipping_method != 'COD'" class="fw-bold">{{ formatPrice(subTotal) }}</span>
+                              <span v-else class="fw-bold">{{ formatPrice(subTotal+orderStore.ongkir) }}</span>
                            </li>
                         </ul>
                      </div>
@@ -114,8 +115,9 @@
  
 <script setup>
 import { useOrder } from "@/store/order"
-import { onMounted, ref, watchEffect } from 'vue';
+import { formatPrice } from "@/utils/currency";
 import { useProducts } from '@/store/products';
+import { onMounted, ref, watchEffect } from 'vue';
 
 const orderStore = useOrder()
 const productStore = useProducts()
@@ -138,7 +140,7 @@ watchEffect(() => {
 
       if (orderStore.order && orderStore.order.order_details && productStore.products) {
          orderStore.order.order_details.forEach(item => {
-            const product = productStore.products.find(product => product.id === item.product_id);
+            const product = item.product;
             if (product) {
                subTotal.value += product.price * item.qty;
             }
@@ -150,7 +152,6 @@ watchEffect(() => {
 });
 
 onMounted(() => {
-    productStore.fetchDataProducts();
     orderStore.fetchDataOrders();
 });
 

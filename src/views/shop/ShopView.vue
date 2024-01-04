@@ -29,7 +29,7 @@
                                     </a>
                                  </li>
                                  <li v-for="(category, index) in categoryStore.categories" :key="index"  class="nav-item border-bottom w-100">
-                                    <a href="#" class="nav-link collapsed" @click="categoryStore.setSelectedCategory(category)">
+                                    <a href="#" class="nav-link collapsed" @click="categoryStore.setSelectedCategory(category)" data-bs-dismiss="offcanvas">
                                        {{ category.name }}
                                     </a>          
                                  </li>
