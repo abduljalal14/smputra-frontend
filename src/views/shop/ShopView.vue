@@ -129,6 +129,7 @@ import { onMounted, watch } from 'vue';
 import { useProducts } from "@/store/products";
 import { useCategory } from "@/store/categories";
 
+
 const productStore = useProducts();
 const categoryStore = useCategory();
 

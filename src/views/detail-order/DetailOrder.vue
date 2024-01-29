@@ -166,8 +166,8 @@ watchEffect(() => {
 
 const searchOrderByIdandOrderId = () => {
    console.log('test 1 passed')
-   const order_id = orderId.value.substring(0, 10);
-   const id = orderId.value.substring(10);
+   const order_id = orderId.value.substring(0, 4);
+   const id = orderId.value.substring(4);
    console.log('order_id :', order_id)
    console.log('id :', id)
    orderStore.fetchDataOrderByIdAndOrderId(order_id, id);
@@ -194,7 +194,7 @@ const generatePdf = () => {
       pdf.text('Wetan, Brebes', paperWidth/2 , 31, { align: 'center' });
       pdf.text('----------------------------------------', 6, 36);
       pdf.text(`Metode Pengiriman  : ${orderStore.order.method}`, 7, 39);
-      pdf.text(`ID Pemesanan       : ${orderStore.order.orderId}`, 7, 42);
+      pdf.text(`ID Pemesanan       : ${orderStore.order.orderId+orderStore.order.id}`, 7, 42);
       pdf.text(`Tanggal            : ${orderStore.formatted}`, 7, 45);
       pdf.text('----------------------------------------', 6, 49);
 

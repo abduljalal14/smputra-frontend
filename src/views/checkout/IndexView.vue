@@ -171,18 +171,18 @@ import { formatPrice } from "@/utils/currency";
 import { useOrder } from '@/store/order'
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useContact } from '@/store/contact'
+//import { useContact } from '@/store/contact'
 
 const cartStore = useCart()
 
 const router = useRouter()
 const orderStore = useOrder()
 
-const contactStore = useContact()
+//const contactStore = useContact()
 
 
 const makeOrder = () => {
-   const listItem = ref(``);
+  //const listItem = ref(``);
    const grandTotal = ref();
 
    if (orderStore.orderMethod == 'COD') {
@@ -190,14 +190,11 @@ const makeOrder = () => {
    } else {
       grandTotal.value = cartStore.calculateTotalSubtotal
    }
-   orderStore.storeOrder(router, cartStore.cartItems)
-   orderStore.fetchDataOrderById(orderStore.orderId)
-       cartStore.cartItems.forEach(cartItem => {
-       listItem.value += `- ${cartItem.product.name} ${cartItem.qty}x@${cartItem.product.price} : Rp. ${cartItem.qty*cartItem.product.price}\n`;
-       });   
-  contactStore.openWhatsApp(orderStore.customerName,orderStore.customerPhone,orderStore.customerAddres,orderStore.storeLocation,orderStore.orderMethod,cartStore.cartItems,grandTotal.value,orderStore.orderId,listItem.value)
-  cartStore.reset()
-  orderStore.reset()
+   orderStore.storeOrder(router, cartStore.cartItems, grandTotal.value)
+   console.log("Isi dari orderId: ", orderStore.orderId)
+   
+   cartStore.reset()
+//   orderStore.reset()
 };
   
 
